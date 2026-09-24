@@ -1,0 +1,11 @@
+experiment:
+  name: lite_fcn
+  output_dir: runs
+
+model:
+  architecture: lite_fcn
+  num_classes: 4
+  base_channels: 8
+
+# Unspecified fields inherit the documented defaults in robotics_vision.config.
+

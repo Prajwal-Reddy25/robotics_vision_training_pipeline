@@ -1,0 +1,44 @@
+experiment:
+  name: smoke
+  output_dir: runs
+
+data:
+  root: data/processed/smoke
+  manifest: data/processed/smoke/manifest.json
+  image_size: 32
+  num_samples: 24
+  seed: 7
+  split:
+    train: 0.5
+    val: 0.25
+    test: 0.25
+  num_workers: 0
+  validate_hashes: true
+
+model:
+  architecture: tiny_unet
+  num_classes: 4
+  base_channels: 4
+
+training:
+  epochs: 1
+  batch_size: 4
+  learning_rate: 0.002
+  weight_decay: 0.0
+  seed: 9
+  device: cpu
+  deterministic: true
+  amp: false
+  resume: null
+  save_every: 1
+
+evaluation:
+  split: test
+  ap_bins: 32
+  save_worst: 2
+
+benchmark:
+  warmup: 1
+  iterations: 3
+  batch_size: 1
+  threads: 1

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Generated data, runs, and model artifacts
+data/processed/
+runs/
+artifacts/
+*.pt
+*.pth
+*.onnx
+*.onnx.data
+*.engine
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+*.ses

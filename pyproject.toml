@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robotics-vision-training-pipeline"
+version = "0.1.0"
+description = "Reproducible semantic-segmentation training and deployment pipeline for robotics perception"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Robotics Vision Pipeline Contributors"}]
+dependencies = [
+  "numpy>=1.24,<3",
+  "Pillow>=9.5",
+  "PyYAML>=6.0",
+  "torch>=2.2",
+]
+
+[project.optional-dependencies]
+export = ["onnx>=1.14", "onnxruntime>=1.16", "onnxscript>=0.4"]
+logging = ["tensorboard>=2.14"]
+dev = ["pytest>=7.4", "ruff>=0.6"]
+all = [
+  "onnx>=1.14",
+  "onnxruntime>=1.16",
+  "onnxscript>=0.4",
+  "tensorboard>=2.14",
+  "pytest>=7.4",
+  "ruff>=0.6",
+]
+
+[project.scripts]
+rv-prepare = "robotics_vision.cli:prepare_main"
+rv-validate = "robotics_vision.cli:validate_main"
+rv-train = "robotics_vision.cli:train_main"
+rv-evaluate = "robotics_vision.cli:evaluate_main"
+rv-export = "robotics_vision.cli:export_main"
+rv-benchmark = "robotics_vision.cli:benchmark_main"
+rv-compare = "robotics_vision.cli:compare_main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

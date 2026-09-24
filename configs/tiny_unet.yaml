@@ -1,0 +1,51 @@
+experiment:
+  name: tiny_unet
+  output_dir: runs
+
+data:
+  root: data/processed/warehouse_shapes
+  manifest: data/processed/warehouse_shapes/manifest.json
+  image_size: 64
+  num_samples: 180
+  seed: 17
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+  num_workers: 0
+  validate_hashes: true
+
+augmentation:
+  enabled: true
+  horizontal_flip_probability: 0.5
+  brightness: 0.15
+  contrast: 0.15
+  gaussian_noise_std: 0.02
+
+model:
+  architecture: tiny_unet
+  num_classes: 4
+  base_channels: 8
+
+training:
+  epochs: 15
+  batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  seed: 42
+  device: auto
+  deterministic: true
+  amp: false
+  resume: null
+  save_every: 1
+
+evaluation:
+  split: test
+  ap_bins: 256
+  save_worst: 5
+
+benchmark:
+  warmup: 5
+  iterations: 30
+  batch_size: 1
+  threads: 1

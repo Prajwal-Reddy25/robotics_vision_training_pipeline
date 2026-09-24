@@ -1,0 +1,83 @@
+from __future__ import annotations
+
+import copy
+import json
+from pathlib import Path
+
+import numpy as np
+import pytest
+from PIL import Image
+
+from robotics_vision.config import DEFAULT_CONFIG
+from robotics_vision.data import (
+    DataValidationError,
+    SegmentationDataset,
+    prepare_dataset,
+    validate_dataset,
+)
+
+
+def _config(root: Path) -> dict:
+    config = copy.deepcopy(DEFAULT_CONFIG)
+    config["data"].update(
+        {
+            "root": str(root),
+            "manifest": str(root / "manifest.json"),
+            "image_size": 24,
+            "num_samples": 12,
+            "seed": 123,
+            "split": {"train": 0.5, "val": 0.25, "test": 0.25},
+        }
+    )
+    return config
+
+
+def test_preparation_is_reproducible_and_has_disjoint_splits(tmp_path: Path) -> None:
+    first_path = prepare_dataset(_config(tmp_path / "first"))
+    second_path = prepare_dataset(_config(tmp_path / "second"))
+    first = json.loads(first_path.read_text(encoding="utf-8"))
+    second = json.loads(second_path.read_text(encoding="utf-8"))
+    first_records = [record for split in first["splits"].values() for record in split]
+    second_records = [record for split in second["splits"].values() for record in split]
+    assert [(r["id"], r["image_sha256"], r["mask_sha256"]) for r in first_records] == [
+        (r["id"], r["image_sha256"], r["mask_sha256"]) for r in second_records
+    ]
+    ids = [
+        {record["id"] for record in first["splits"][split]} for split in ("train", "val", "test")
+    ]
+    assert ids[0].isdisjoint(ids[1])
+    assert ids[0].isdisjoint(ids[2])
+    assert ids[1].isdisjoint(ids[2])
+    validation = validate_dataset(first_path)
+    assert validation["samples"] == 12
+    assert sum(validation["split_class_pixels"]["train"].values()) == 6 * 24 * 24
+
+
+def test_paired_augmentation_is_deterministic(tmp_path: Path) -> None:
+    manifest = prepare_dataset(_config(tmp_path / "data"))
+    augmentation = {
+        "enabled": True,
+        "horizontal_flip_probability": 1.0,
+        "brightness": 0.2,
+        "contrast": 0.2,
+        "gaussian_noise_std": 0.01,
+    }
+    dataset = SegmentationDataset(manifest, "train", augmentation, seed=77)
+    first = dataset[0]
+    second = dataset[0]
+    assert np.array_equal(first["image"].numpy(), second["image"].numpy())
+    assert np.array_equal(first["mask"].numpy(), second["mask"].numpy())
+    dataset.set_epoch(1)
+    assert not np.array_equal(first["image"].numpy(), dataset[0]["image"].numpy())
+
+
+def test_validation_rejects_out_of_range_mask(tmp_path: Path) -> None:
+    manifest_path = prepare_dataset(_config(tmp_path / "data"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    record = manifest["splits"]["train"][0]
+    mask_path = manifest_path.parent / record["mask"]
+    array = np.asarray(Image.open(mask_path)).copy()
+    array[0, 0] = 99
+    Image.fromarray(array).save(mask_path)
+    with pytest.raises(DataValidationError, match="Out-of-range label"):
+        validate_dataset(manifest_path, check_hashes=False)

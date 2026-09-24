@@ -4,12 +4,14 @@ import copy
 import importlib.util
 from pathlib import Path
 
+import pytest
 import torch
 
 from robotics_vision.benchmarking import run_benchmark
 from robotics_vision.config import DEFAULT_CONFIG
 from robotics_vision.evaluation import run_evaluation
 from robotics_vision.exporting import run_export
+from robotics_vision.reproducibility import capture_rng_state, restore_rng_state
 from robotics_vision.training import load_checkpoint, run_training
 
 
@@ -90,6 +92,7 @@ def test_exact_resume_evaluate_export_and_benchmark(tmp_path: Path) -> None:
     assert benchmark["input_shape"] == [1, 3, 16, 16]
     assert benchmark["latency_ms_per_batch_min"] > 0
     assert benchmark["model_sha256"] == export["artifacts"]["torchscript"]["sha256"]
+    assert benchmark["cuda_max_memory_allocated_bytes"] is None
 
 
 def test_resume_rejects_changed_schedule(tmp_path: Path) -> None:
@@ -106,3 +109,19 @@ def test_resume_rejects_changed_schedule(tmp_path: Path) -> None:
         assert "training.epochs" in str(exc)
     else:
         raise AssertionError("Changed resume schedule was accepted")
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is required")
+def test_rng_restore_accepts_checkpoint_state_mapped_to_cuda() -> None:
+    state = capture_rng_state()
+    mapped_state = dict(state)
+    mapped_state["torch"] = state["torch"].cuda()
+    mapped_state["cuda"] = [item.cuda() for item in state["cuda"]]
+
+    restore_rng_state(mapped_state)
+
+    assert torch.equal(torch.get_rng_state(), state["torch"])
+    assert all(
+        torch.equal(actual, expected)
+        for actual, expected in zip(torch.cuda.get_rng_state_all(), state["cuda"], strict=True)
+    )

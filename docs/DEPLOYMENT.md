@@ -34,7 +34,7 @@ rv-benchmark --config configs/tiny_unet.yaml \
   --output runs/tiny_unet/benchmark_onnxruntime.json
 ```
 
-Every benchmark hash-validates and evaluates the configured held-out split, then runs warmup and measured uniform-random synthetic batches. Timings cover the model call only, excluding data loading and preprocessing. The report includes artifact hash/type/size, parameter count/bytes when introspectable, accuracy metrics, mean/stddev/min/max/p50/p95 batch latency, per-image latency, throughput, input shape, runtime/provider, environment, device, thread count, batch size, and iteration counts. CUDA calls are synchronized before and after timing; ONNX Runtime currently uses its CPU execution provider.
+Every benchmark hash-validates and evaluates the configured held-out split, then runs warmup and measured uniform-random synthetic batches. Timings cover the model call only, excluding data loading and preprocessing. The report includes artifact hash/type/size, parameter count/bytes when introspectable, accuracy metrics, mean/stddev/min/max/p50/p95 batch latency, per-image latency, throughput, input shape, runtime/provider, environment, device, thread count, batch size, and iteration counts. CUDA calls are synchronized before and after timing and report PyTorch allocator baseline/peak memory (which excludes driver/context allocations); ONNX Runtime currently uses its CPU execution provider.
 
 ## Optional TensorRT
 

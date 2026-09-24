@@ -151,6 +151,7 @@ Tests cover deterministic generation, ID/path/content leakage, checksum/label va
 - [Portfolio requirement map](docs/PORTFOLIO_REVIEW.md)
 - [Local verification record](docs/VERIFICATION.md)
 - [Technical audit report](docs/AUDIT_REPORT.md)
+- [NVIDIA GPU validation](docs/GPU_VALIDATION.md)
 
 ## License
 

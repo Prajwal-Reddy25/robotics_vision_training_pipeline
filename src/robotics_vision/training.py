@@ -252,7 +252,7 @@ def run_training(config: dict[str, Any], overwrite: bool = False) -> dict[str, A
         restore_rng_state(checkpoint["rng_state"])
         loader_generator_state = checkpoint.get("data_loader_generator_state")
         if loader_generator_state is not None and train_loader.generator is not None:
-            train_loader.generator.set_state(loader_generator_state)
+            train_loader.generator.set_state(loader_generator_state.cpu())
         start_epoch = int(checkpoint["epoch"]) + 1
         best_mean_iou = float(checkpoint["best_mean_iou"])
         best_epoch = int(checkpoint["best_epoch"])

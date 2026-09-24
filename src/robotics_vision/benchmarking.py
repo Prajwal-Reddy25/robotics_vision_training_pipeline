@@ -133,6 +133,12 @@ def run_benchmark(
     batch_size = int(benchmark["batch_size"])
     example = torch.rand(batch_size, 3, image_size, image_size, device=device)
 
+    cuda_memory_baseline: int | None = None
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+        torch.cuda.reset_peak_memory_stats(device)
+        cuda_memory_baseline = torch.cuda.memory_allocated(device)
+
     def synchronize() -> None:
         if device.type == "cuda":
             torch.cuda.synchronize(device)
@@ -148,6 +154,28 @@ def run_benchmark(
             model(example)
             synchronize()
             durations.append((time.perf_counter() - started) * 1000.0)
+
+    cuda_memory = {
+        "cuda_memory_allocated_baseline_bytes": cuda_memory_baseline,
+        "cuda_memory_allocated_after_bytes": (
+            torch.cuda.memory_allocated(device) if device.type == "cuda" else None
+        ),
+        "cuda_memory_reserved_after_bytes": (
+            torch.cuda.memory_reserved(device) if device.type == "cuda" else None
+        ),
+        "cuda_max_memory_allocated_bytes": (
+            torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None
+        ),
+        "cuda_max_memory_reserved_bytes": (
+            torch.cuda.max_memory_reserved(device) if device.type == "cuda" else None
+        ),
+        "cuda_memory_note": (
+            "PyTorch CUDA allocator bytes during warmup and timed model calls; includes the "
+            "loaded model and benchmark input, but excludes CUDA context/driver allocations."
+            if device.type == "cuda"
+            else None
+        ),
+    }
 
     mean_batch_ms = statistics.fmean(durations)
     result = {
@@ -185,6 +213,7 @@ def run_benchmark(
         "mean_recall": accuracy["mean_recall"],
         "pixel_map_foreground": accuracy["pixel_map_foreground"],
         "environment": environment_metadata(),
+        **cuda_memory,
     }
     write_json(output_path, result)
     return result

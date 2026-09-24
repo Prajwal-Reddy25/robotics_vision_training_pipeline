@@ -44,9 +44,12 @@ def capture_rng_state() -> dict[str, Any]:
 def restore_rng_state(state: dict[str, Any]) -> None:
     random.setstate(state["python"])
     np.random.set_state(state["numpy"])
-    torch.set_rng_state(state["torch"])
+    # Full checkpoints may be loaded with ``map_location="cuda"`` so optimizer
+    # tensors are restored directly onto the training device. RNG state APIs,
+    # however, require CPU ByteTensors even when restoring CUDA generators.
+    torch.set_rng_state(state["torch"].cpu())
     if torch.cuda.is_available() and "cuda" in state:
-        torch.cuda.set_rng_state_all(state["cuda"])
+        torch.cuda.set_rng_state_all([item.cpu() for item in state["cuda"]])
 
 
 def seed_worker(worker_id: int) -> None:

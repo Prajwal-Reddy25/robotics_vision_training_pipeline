@@ -22,9 +22,11 @@ AMP is deliberately disabled on CPU even if requested. `training.device: auto` s
 
 ## Checkpoint policy
 
-`last.pt` is atomically replaced after every completed epoch. `best.pt` is copied whenever validation mean IoU improves. `epoch_NNN.pt` follows `save_every`. A checkpoint contains all state necessary for continuation, including global RNG and DataLoader shuffle-generator states. Worker processes are recreated each epoch so they receive the current deterministic augmentation epoch.
+`last.pt` is atomically replaced after every completed epoch. `best.pt` is copied whenever validation mean IoU improves. `epoch_NNN.pt` follows `save_every`. Format-3 checkpoints contain the current and best model states, best epoch/score, optimizer, scheduler, AMP scaler, global RNG, and DataLoader shuffle-generator state. A resumed run can therefore materialize a valid `best.pt` even in a new output directory. Worker processes are recreated each epoch so they receive the current deterministic augmentation epoch.
 
-Resume changes to the manifest, input size, architecture, base channels, or class count are rejected. Increasing the final epoch count is supported. When changing total epochs after resume, the scheduler state is restored exactly from the checkpoint; this prioritizes continuity of the original run over retroactively reshaping its schedule.
+Exact resume requires the original planned epoch count and rejects trajectory-changing configuration edits. Extending a completed cosine schedule is intentionally rejected because silently continuing beyond `T_max` changes learning-rate semantics; start an explicitly named fine-tuning experiment instead. Format-1/2 checkpoints remain usable for evaluation/export but do not meet the format-3 exact-resume contract.
+
+Full-state checkpoints are loaded with `torch.load(..., weights_only=False)` and can execute pickle payloads. Load only checkpoints produced by a trusted run or artifact store.
 
 ## Logging
 

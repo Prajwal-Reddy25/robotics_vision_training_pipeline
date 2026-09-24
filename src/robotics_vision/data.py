@@ -26,6 +26,7 @@ PALETTE = np.asarray(
     dtype=np.uint8,
 )
 GENERATOR_VERSION = "1.0"
+GENERATOR_NAME = "robotics_vision.synthetic_warehouse"
 
 
 class DataValidationError(ValueError):
@@ -96,14 +97,77 @@ def _split_counts(total: int, ratios: dict[str, float]) -> dict[str, int]:
     return counts
 
 
+def _assert_safe_generated_root(root: Path, manifest_path: Path) -> None:
+    resolved = root.resolve()
+    dangerous = {Path("/").resolve(), Path.cwd().resolve(), Path.home().resolve()}
+    if resolved in dangerous or Path.cwd().resolve().is_relative_to(resolved):
+        raise DataValidationError(f"Refusing to replace unsafe data root: {root}")
+    if root.is_symlink():
+        raise DataValidationError(f"Refusing to replace symlinked data root: {root}")
+    if not any(root.iterdir()):
+        return
+    if manifest_path.is_file():
+        manifest = load_manifest(manifest_path)
+        if manifest.get("generator") == GENERATOR_NAME:
+            return
+    managed_base = (Path.cwd() / "data" / "processed").resolve()
+    if not resolved.is_relative_to(managed_base) or resolved == managed_base:
+        raise DataValidationError(
+            "Refusing to replace a non-empty directory without a matching generated manifest"
+        )
+
+
+def _validate_manifest_matches_config(manifest: dict[str, Any], config: dict[str, Any]) -> None:
+    data_config = config["data"]
+    actual_samples = sum(len(records) for records in manifest.get("splits", {}).values())
+    expected = {
+        "generator": GENERATOR_NAME,
+        "generator_version": GENERATOR_VERSION,
+        "seed": int(data_config["seed"]),
+        "image_size": [int(data_config["image_size"]), int(data_config["image_size"])],
+        "split_ratios": data_config["split"],
+        "samples": int(data_config["num_samples"]),
+    }
+    actual = {
+        "generator": manifest.get("generator"),
+        "generator_version": manifest.get("generator_version"),
+        "seed": manifest.get("seed"),
+        "image_size": manifest.get("image_size"),
+        "split_ratios": manifest.get("split_ratios"),
+        "samples": actual_samples,
+    }
+    mismatches = [key for key in expected if actual[key] != expected[key]]
+    if mismatches:
+        raise DataValidationError(
+            "Existing manifest does not match config fields "
+            f"{mismatches}; use --force to regenerate"
+        )
+
+
+def _resolve_record_path(root: Path, value: Any, field: str, identifier: str) -> Path:
+    if not isinstance(value, str) or not value:
+        raise DataValidationError(f"Invalid {field} path for sample {identifier}")
+    relative = Path(value)
+    if relative.is_absolute():
+        raise DataValidationError(f"Absolute {field} path is not allowed for sample {identifier}")
+    resolved = (root / relative).resolve()
+    if not resolved.is_relative_to(root.resolve()):
+        raise DataValidationError(f"{field} path escapes dataset root for sample {identifier}")
+    return resolved
+
+
 def prepare_dataset(config: dict[str, Any], force: bool = False) -> Path:
     data_config = config["data"]
     root = Path(data_config["root"])
     manifest_path = Path(data_config["manifest"])
+    if root.resolve() != manifest_path.parent.resolve():
+        raise DataValidationError("data.manifest must be directly inside data.root")
     if manifest_path.exists() and not force:
         validate_dataset(manifest_path, check_hashes=bool(data_config["validate_hashes"]))
+        _validate_manifest_matches_config(load_manifest(manifest_path), config)
         return manifest_path
     if root.exists() and force:
+        _assert_safe_generated_root(root, manifest_path)
         shutil.rmtree(root)
     images_dir = root / "images"
     masks_dir = root / "masks"
@@ -144,7 +208,7 @@ def prepare_dataset(config: dict[str, Any], force: bool = False) -> Path:
 
     manifest = {
         "schema_version": 1,
-        "generator": "robotics_vision.synthetic_warehouse",
+        "generator": GENERATOR_NAME,
         "generator_version": GENERATOR_VERSION,
         "license": "CC0-1.0",
         "seed": seed,
@@ -179,6 +243,10 @@ def validate_dataset(manifest_path: str | Path, check_hashes: bool = True) -> di
     root = manifest_path.parent
     if manifest.get("schema_version") != 1:
         raise DataValidationError("Unsupported or missing manifest schema_version")
+    if not isinstance(manifest.get("generator"), str) or not isinstance(
+        manifest.get("generator_version"), str
+    ):
+        raise DataValidationError("Manifest generator metadata is missing or invalid")
     if manifest.get("class_names") != CLASS_NAMES:
         raise DataValidationError(
             f"Expected classes {CLASS_NAMES}, got {manifest.get('class_names')}"
@@ -186,30 +254,66 @@ def validate_dataset(manifest_path: str | Path, check_hashes: bool = True) -> di
     if set(manifest.get("splits", {})) != {"train", "val", "test"}:
         raise DataValidationError("Manifest must contain train, val, and test splits")
 
+    image_size = manifest.get("image_size")
+    if (
+        not isinstance(image_size, list)
+        or len(image_size) != 2
+        or any(
+            isinstance(value, bool) or not isinstance(value, int) or value <= 0
+            for value in image_size
+        )
+    ):
+        raise DataValidationError("Manifest image_size must contain two positive integers")
+
     seen: set[str] = set()
+    seen_image_paths: dict[Path, str] = {}
+    seen_mask_paths: dict[Path, str] = {}
+    seen_image_hashes: dict[str, str] = {}
     class_pixels = np.zeros(len(CLASS_NAMES), dtype=np.int64)
     split_class_pixels: dict[str, dict[str, int]] = {}
     split_counts: dict[str, int] = {}
-    expected_size = tuple(manifest["image_size"])
+    expected_size = tuple(image_size)
     for split_name, records in manifest["splits"].items():
-        if not records:
+        if not isinstance(records, list) or not records:
             raise DataValidationError(f"Split {split_name} is empty")
         split_counts[split_name] = len(records)
         current_split_pixels = np.zeros(len(CLASS_NAMES), dtype=np.int64)
         for record in records:
+            if not isinstance(record, dict):
+                raise DataValidationError(f"Invalid record in split {split_name}")
             identifier = record.get("id")
+            if not isinstance(identifier, str) or not identifier:
+                raise DataValidationError(f"Invalid sample id in split {split_name}")
             if identifier in seen:
                 raise DataValidationError(f"Duplicate or leaked sample id: {identifier}")
             seen.add(identifier)
-            image_path = root / record["image"]
-            mask_path = root / record["mask"]
+            image_path = _resolve_record_path(root, record.get("image"), "image", identifier)
+            mask_path = _resolve_record_path(root, record.get("mask"), "mask", identifier)
+            if image_path in seen_image_paths:
+                raise DataValidationError(
+                    f"Image path reused by {seen_image_paths[image_path]} and {identifier}"
+                )
+            if mask_path in seen_mask_paths:
+                raise DataValidationError(
+                    f"Mask path reused by {seen_mask_paths[mask_path]} and {identifier}"
+                )
+            seen_image_paths[image_path] = identifier
+            seen_mask_paths[mask_path] = identifier
             if not image_path.is_file() or not mask_path.is_file():
                 raise DataValidationError(f"Missing image or mask for sample {identifier}")
             if check_hashes:
-                if _sha256(image_path) != record["image_sha256"]:
+                image_hash = _sha256(image_path)
+                mask_hash = _sha256(mask_path)
+                if image_hash != record.get("image_sha256"):
                     raise DataValidationError(f"Image checksum mismatch: {identifier}")
-                if _sha256(mask_path) != record["mask_sha256"]:
+                if mask_hash != record.get("mask_sha256"):
                     raise DataValidationError(f"Mask checksum mismatch: {identifier}")
+                if image_hash in seen_image_hashes:
+                    raise DataValidationError(
+                        "Duplicate image content in "
+                        f"{seen_image_hashes[image_hash]} and {identifier}"
+                    )
+                seen_image_hashes[image_hash] = identifier
             with Image.open(image_path) as image, Image.open(mask_path) as mask:
                 if image.mode != "RGB" or mask.mode != "L":
                     raise DataValidationError(

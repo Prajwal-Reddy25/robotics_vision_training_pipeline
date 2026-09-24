@@ -27,3 +27,19 @@ def test_pixel_ap_is_one_for_separable_predictions() -> None:
     result = meter.compute()
     assert result["pixel_average_precision"]["object"] == pytest.approx(1.0)
     assert result["pixel_map_foreground"] == pytest.approx(1.0)
+
+
+def test_mean_iou_ignores_classes_absent_from_truth_and_prediction() -> None:
+    metric = SegmentationMetrics(3, ["first", "second", "absent"])
+    target = torch.tensor([[0, 1]])
+    metric.update(target, target)
+    result = metric.compute()
+    assert result["mean_iou"] == pytest.approx(1.0)
+    assert result["evaluated_iou_classes"] == 2
+    assert result["per_class"]["absent"]["iou"] == 0.0
+
+
+def test_metrics_reject_out_of_range_prediction() -> None:
+    metric = SegmentationMetrics(2, ["background", "object"])
+    with pytest.raises(ValueError, match="out-of-range"):
+        metric.update(torch.tensor([[0, 2]]), torch.tensor([[0, 1]]))

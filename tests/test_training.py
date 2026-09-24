@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import copy
+import importlib.util
 from pathlib import Path
 
 import torch
 
+from robotics_vision.benchmarking import run_benchmark
 from robotics_vision.config import DEFAULT_CONFIG
 from robotics_vision.evaluation import run_evaluation
 from robotics_vision.exporting import run_export
@@ -27,34 +29,80 @@ def _smoke_config(tmp_path: Path) -> dict:
     )
     config["model"].update({"architecture": "lite_fcn", "base_channels": 2})
     config["training"].update(
-        {"epochs": 1, "batch_size": 3, "device": "cpu", "amp": False, "save_every": 1}
+        {"epochs": 2, "batch_size": 3, "device": "cpu", "amp": False, "save_every": 1}
     )
     config["evaluation"].update({"ap_bins": 8, "save_worst": 1})
+    config["benchmark"].update({"warmup": 1, "iterations": 3, "threads": 1})
     return config
 
 
-def test_train_resume_evaluate_and_torchscript_export(tmp_path: Path) -> None:
+def test_exact_resume_evaluate_export_and_benchmark(tmp_path: Path) -> None:
     torch.set_num_threads(1)
     config = _smoke_config(tmp_path)
-    first = run_training(config)
-    checkpoint = load_checkpoint(first["checkpoint"])
-    assert checkpoint["epoch"] == 0
-    assert checkpoint["data_loader_generator_state"] is not None
+    uninterrupted = run_training(config)
+    checkpoint = load_checkpoint(uninterrupted["checkpoint"])
+    assert checkpoint["epoch"] == 1
+    interrupted_checkpoint = Path(uninterrupted["run_dir"]) / "checkpoints" / "epoch_000.pt"
 
     resumed_config = copy.deepcopy(config)
-    resumed_config["training"]["epochs"] = 2
-    resumed_config["training"]["resume"] = first["checkpoint"]
+    resumed_config["experiment"]["name"] = "resumed"
+    resumed_config["training"]["resume"] = str(interrupted_checkpoint)
     resumed = run_training(resumed_config)
-    assert load_checkpoint(resumed["checkpoint"])["epoch"] == 1
+    resumed_checkpoint = load_checkpoint(resumed["checkpoint"])
+    assert resumed_checkpoint["epoch"] == 1
+    assert all(
+        torch.equal(checkpoint["model_state"][key], resumed_checkpoint["model_state"][key])
+        for key in checkpoint["model_state"]
+    )
+    assert torch.equal(
+        checkpoint["data_loader_generator_state"],
+        resumed_checkpoint["data_loader_generator_state"],
+    )
 
     evaluation = run_evaluation(resumed_config, resumed["best_checkpoint"])
     assert evaluation["samples"] == 3
     assert len(evaluation["confusion_matrix"]) == 4
+    onnx_available = (
+        importlib.util.find_spec("onnx") is not None
+        and importlib.util.find_spec("onnxruntime") is not None
+    )
     export = run_export(
         resumed_config,
         resumed["best_checkpoint"],
         tmp_path / "artifacts",
-        export_onnx=False,
+        export_onnx=onnx_available,
     )
     assert Path(export["artifacts"]["torchscript"]["path"]).is_file()
-    assert export["artifacts"]["torchscript"]["argmax_agreement"] == 1.0
+    assert len(export["artifacts"]["torchscript"]["verification_cases"]) == 2
+    assert all(
+        case["allclose"] for case in export["artifacts"]["torchscript"]["verification_cases"]
+    )
+    if onnx_available:
+        assert len(export["artifacts"]["onnx"]["verification_cases"]) == 2
+        assert all(case["allclose"] for case in export["artifacts"]["onnx"]["verification_cases"])
+
+    benchmark = run_benchmark(
+        resumed_config,
+        export["artifacts"]["torchscript"]["path"],
+        "torchscript",
+        tmp_path / "benchmark.json",
+    )
+    assert benchmark["input_shape"] == [1, 3, 16, 16]
+    assert benchmark["latency_ms_per_batch_min"] > 0
+    assert benchmark["model_sha256"] == export["artifacts"]["torchscript"]["sha256"]
+
+
+def test_resume_rejects_changed_schedule(tmp_path: Path) -> None:
+    torch.set_num_threads(1)
+    config = _smoke_config(tmp_path)
+    result = run_training(config)
+    changed = copy.deepcopy(config)
+    changed["experiment"]["name"] = "changed"
+    changed["training"]["epochs"] = 3
+    changed["training"]["resume"] = result["checkpoint"]
+    try:
+        run_training(changed)
+    except ValueError as exc:
+        assert "training.epochs" in str(exc)
+    else:
+        raise AssertionError("Changed resume schedule was accepted")

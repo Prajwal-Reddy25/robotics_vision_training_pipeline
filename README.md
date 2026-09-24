@@ -79,17 +79,16 @@ rv-compare \
 
 The comparison command refuses fewer than two measured files and copies values without inventing missing data.
 
-## Resume exactly
+## Resume training
 
 Checkpoints include model, optimizer, scheduler, AMP scaler, epoch, best score, resolved configuration, DataLoader shuffle state, and Python/NumPy/PyTorch/CUDA RNG state.
 
 ```bash
 rv-train --config configs/tiny_unet.yaml \
-  --resume runs/tiny_unet/checkpoints/last.pt \
-  --set training.epochs=6
+  --resume runs/tiny_unet/checkpoints/last.pt
 ```
 
-`training.epochs` is the final epoch count, not the number of additional epochs. A resume rejects changes to architecture, channel count, image size, class count, or manifest. Exact reproducibility still depends on identical hardware, PyTorch/CUDA versions, and worker count.
+Plan the final epoch count before the initial run. Exact resume rejects changes to the epoch schedule, optimizer, batch size, seeds, augmentation, workers, AMP mode, architecture, input size, class count, or manifest. CPU tests compare interrupted and uninterrupted model weights bit for bit. Cross-device or cross-version equality is not promised. Checkpoints use Python pickle for full optimizer/RNG state and must come from a trusted source.
 
 ## Configuration
 
@@ -110,7 +109,7 @@ Evaluation reports:
 
 - pixel accuracy;
 - per-class and macro precision/recall;
-- per-class IoU and mean IoU;
+- per-class IoU and mean IoU over classes present in the evaluated ground-truth/prediction union;
 - the full ground-truth-row/prediction-column confusion matrix;
 - histogram-approximated one-vs-rest pixel average precision and foreground pixel mAP;
 - the lowest-IoU examples as `input | ground truth | prediction` PNG panels.
@@ -141,7 +140,7 @@ pytest
 ruff check .
 ```
 
-Tests cover deterministic generation, split leakage, checksum/label validation, deterministic paired augmentation, exact metric cases, both model shapes and TorchScript compilation, train/checkpoint/resume/evaluate/export integration, and measured comparison output. GitHub Actions runs those checks plus the complete tiny lifecycle and both architectures on CPU.
+Tests cover deterministic generation, ID/path/content leakage, checksum/label validation, deterministic paired augmentation, exact metric edge cases, both model shapes, bitwise CPU resume, dynamic TorchScript/ONNX equivalence, evaluation, benchmarking, and measured comparison output. GitHub Actions runs those checks plus the complete tiny lifecycle and both architectures on CPU.
 
 ## Documentation
 
@@ -151,6 +150,7 @@ Tests cover deterministic generation, split leakage, checksum/label validation, 
 - [Export and deployment](docs/DEPLOYMENT.md)
 - [Portfolio requirement map](docs/PORTFOLIO_REVIEW.md)
 - [Local verification record](docs/VERIFICATION.md)
+- [Technical audit report](docs/AUDIT_REPORT.md)
 
 ## License
 

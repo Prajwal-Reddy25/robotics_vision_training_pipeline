@@ -6,12 +6,13 @@ from typing import Any
 import numpy as np
 from PIL import Image
 
+from .config import validate_config
 from .data import SegmentationDataset, colorize_mask, make_dataloader, validate_dataset
 from .engine import evaluate_model
 from .models import build_model
 from .reproducibility import resolve_device, seed_everything
 from .runlog import write_json
-from .training import load_checkpoint
+from .training import load_checkpoint, validate_checkpoint_model_config
 
 
 def _save_error_analysis(
@@ -47,12 +48,14 @@ def _save_error_analysis(
 def run_evaluation(
     config: dict[str, Any], checkpoint_path: str | Path, output_dir: str | Path | None = None
 ) -> dict[str, Any]:
+    validate_config(config)
     seed_everything(int(config["training"]["seed"]), bool(config["training"]["deterministic"]))
     device = resolve_device(config["training"]["device"])
     validate_dataset(
         config["data"]["manifest"], check_hashes=bool(config["data"]["validate_hashes"])
     )
     checkpoint = load_checkpoint(checkpoint_path, map_location=device)
+    validate_checkpoint_model_config(config, checkpoint)
     model = build_model(config["model"]).to(device)
     model.load_state_dict(checkpoint["model_state"])
     split = config["evaluation"]["split"]

@@ -6,7 +6,7 @@ The export command loads a selected checkpoint on CPU and writes:
 
 - `model.torchscript.pt`, compiled with `torch.jit.script`;
 - `model.onnx`, opset 18 with dynamic batch/height/width axes and embedded weights for these small models;
-- `metadata.json`, including source checkpoint/epoch, model settings, tensor contract, file sizes, maximum absolute conversion error, and pixel-argmax agreement.
+- `metadata.json`, including source checkpoint/epoch/hash, model settings, tensor contract, artifact hashes/sizes, numerical tolerances, and per-shape equivalence results.
 
 Input is float32 RGB in NCHW order scaled to `[0, 1]`. There is no mean/std standardization. Output is NCHW logits; apply `argmax(axis=1)` for class IDs.
 
@@ -16,7 +16,7 @@ rv-export --config configs/tiny_unet.yaml \
   --output-dir artifacts/tiny_unet
 ```
 
-ONNX is structurally checked with `onnx.checker` and, by default, executed with ONNX Runtime CPU for numerical comparison. Current PyTorch exporters also use `onnxscript`; it is included in the `export`/`all` extras. Use `--no-onnx-verify` only when intentionally exporting on a build host without ONNX Runtime.
+ONNX is structurally checked with `onnx.checker` and, by default, executed with ONNX Runtime CPU at the configured shape and a second dynamic batch/odd spatial shape. TorchScript receives the same two checks. Export fails unless outputs are finite, logits meet `rtol=1e-4`/`atol=1e-5`, and pixel argmax agreement is at least 99.9%. Current PyTorch exporters also use `onnxscript`; it is included in the `export`/`all` extras. Use `--no-onnx-verify` only when intentionally exporting on a build host without ONNX Runtime, and verify before deployment.
 
 ## Backend benchmarks
 
@@ -34,7 +34,7 @@ rv-benchmark --config configs/tiny_unet.yaml \
   --output runs/tiny_unet/benchmark_onnxruntime.json
 ```
 
-Every benchmark first evaluates the configured held-out split, then runs warmup and measured synthetic batches. The report includes artifact size, parameter count when introspectable, accuracy metrics, mean/p50/p95 batch latency, per-image latency, throughput, device, thread count, batch size, and iteration counts. ONNX Runtime currently uses its CPU execution provider for comparable, dependency-light deployment tests.
+Every benchmark hash-validates and evaluates the configured held-out split, then runs warmup and measured uniform-random synthetic batches. Timings cover the model call only, excluding data loading and preprocessing. The report includes artifact hash/type/size, parameter count/bytes when introspectable, accuracy metrics, mean/stddev/min/max/p50/p95 batch latency, per-image latency, throughput, input shape, runtime/provider, environment, device, thread count, batch size, and iteration counts. CUDA calls are synchronized before and after timing; ONNX Runtime currently uses its CPU execution provider.
 
 ## Optional TensorRT
 

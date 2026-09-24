@@ -28,17 +28,20 @@ rv-prepare --config configs/tiny_unet.yaml
 rv-validate --config configs/tiny_unet.yaml
 ```
 
-Re-running without `--force` validates and reuses an existing manifest. `--force` replaces only the configured generated-data root; verify custom paths before using it.
+Re-running without `--force` validates and reuses an existing manifest only when generator version, seed, image size, sample count, and split ratios match the active config. `--force` replaces only a guarded generated-data root and refuses repository/home/root directories, symlinked roots, and unrecognized non-empty external directories.
 
 ## Validation
 
 The validator checks:
 
 - schema and exact class map;
-- required non-empty splits and globally unique IDs;
+- required non-empty splits, globally unique IDs, unique resolved paths, and duplicate image content when hashes are enabled;
+- relative paths confined to the dataset root, including symlink resolution;
 - file existence, RGB/L modes, matching expected dimensions;
 - labels constrained to `[0, 3]` and global class presence;
 - image and mask SHA-256 values unless explicitly skipped.
+
+`--skip-hashes` retains structural/path/label checks but cannot detect duplicate content stored at different paths. It is a speed/debug option, not the recommended training gate.
 
 ## Biases and limitations
 

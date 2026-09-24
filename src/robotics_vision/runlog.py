@@ -65,8 +65,18 @@ def environment_metadata() -> dict[str, Any]:
             text=True,
             timeout=3,
         ).stdout.strip()
+        dirty = bool(
+            subprocess.run(
+                ["git", "status", "--porcelain", "--untracked-files=no"],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=3,
+            ).stdout.strip()
+        )
     except (OSError, subprocess.SubprocessError):
         commit = None
+        dirty = None
     return {
         "python": sys.version,
         "platform": platform.platform(),
@@ -76,6 +86,7 @@ def environment_metadata() -> dict[str, Any]:
         "cuda_version": torch.version.cuda,
         "cudnn_version": torch.backends.cudnn.version() if torch.cuda.is_available() else None,
         "git_commit": commit,
+        "git_dirty": dirty,
     }
 
 

@@ -22,8 +22,13 @@ class SegmentationMetrics:
     def update(self, prediction: torch.Tensor, target: torch.Tensor) -> None:
         pred = prediction.detach().to("cpu", dtype=torch.int64).reshape(-1).numpy()
         truth = target.detach().to("cpu", dtype=torch.int64).reshape(-1).numpy()
-        valid = (truth >= 0) & (truth < self.num_classes)
-        encoded = self.num_classes * truth[valid] + pred[valid]
+        if pred.shape != truth.shape:
+            raise ValueError(f"Prediction and target sizes differ: {pred.shape} != {truth.shape}")
+        if pred.size and (pred.min() < 0 or pred.max() >= self.num_classes):
+            raise ValueError("Prediction contains an out-of-range class")
+        if truth.size and (truth.min() < 0 or truth.max() >= self.num_classes):
+            raise ValueError("Target contains an out-of-range class")
+        encoded = self.num_classes * truth + pred
         self.confusion += np.bincount(encoded, minlength=self.num_classes**2).reshape(
             self.num_classes, self.num_classes
         )
@@ -35,13 +40,19 @@ class SegmentationMetrics:
         predicted = matrix.sum(axis=0).astype(np.float64)
         precision = _safe_divide(true_positive, predicted)
         recall = _safe_divide(true_positive, actual)
-        iou = _safe_divide(true_positive, actual + predicted - true_positive)
+        union = actual + predicted - true_positive
+        iou = _safe_divide(true_positive, union)
+        evaluated_iou = union > 0
         total = matrix.sum()
         return {
             "pixel_accuracy": float(true_positive.sum() / total) if total else float("nan"),
             "mean_precision": float(np.mean(precision)),
             "mean_recall": float(np.mean(recall)),
-            "mean_iou": float(np.mean(iou)),
+            "mean_iou": (
+                float(np.mean(iou[evaluated_iou])) if np.any(evaluated_iou) else float("nan")
+            ),
+            "evaluated_iou_classes": int(evaluated_iou.sum()),
+            "zero_division_policy": "Per-class precision/recall/IoU use 0.0 when undefined.",
             "per_class": {
                 name: {
                     "precision": float(precision[index]),
@@ -70,6 +81,12 @@ class StreamingPixelAP:
         self.negative = np.zeros((num_classes, bins), dtype=np.int64)
 
     def update(self, logits: torch.Tensor, target: torch.Tensor) -> None:
+        if logits.ndim != 4 or logits.shape[1] != self.num_classes:
+            raise ValueError("Logits must have shape [N, num_classes, H, W]")
+        if target.shape != (logits.shape[0], logits.shape[2], logits.shape[3]):
+            raise ValueError("Target shape must match logits batch and spatial dimensions")
+        if target.numel() and (target.min() < 0 or target.max() >= self.num_classes):
+            raise ValueError("Target contains an out-of-range class")
         probabilities = torch.softmax(logits.detach(), dim=1).to("cpu")
         target_cpu = target.detach().to("cpu")
         for class_index in range(self.num_classes):

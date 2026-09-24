@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import statistics
 import time
 from pathlib import Path
@@ -8,12 +9,13 @@ from typing import Any, Protocol
 import numpy as np
 import torch
 
-from .data import SegmentationDataset, make_dataloader
+from .config import validate_config
+from .data import SegmentationDataset, make_dataloader, validate_dataset
 from .engine import evaluate_model
 from .models import build_model, count_parameters
 from .reproducibility import resolve_device, seed_everything
-from .runlog import write_json
-from .training import load_checkpoint
+from .runlog import environment_metadata, write_json
+from .training import load_checkpoint, validate_checkpoint_model_config
 
 
 class InferenceModel(Protocol):
@@ -34,6 +36,8 @@ class OnnxRuntimeModel:
         self.session = ort.InferenceSession(
             str(path), sess_options=options, providers=["CPUExecutionProvider"]
         )
+        self.runtime_version = ort.__version__
+        self.providers = self.session.get_providers()
 
     def eval(self) -> OnnxRuntimeModel:
         return self
@@ -52,12 +56,21 @@ def _artifact_size(path: Path) -> int:
     return path.stat().st_size + sum(item.stat().st_size for item in related)
 
 
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def run_benchmark(
     config: dict[str, Any],
     model_path: str | Path,
     backend: str,
     output_path: str | Path,
 ) -> dict[str, Any]:
+    validate_config(config)
     benchmark = config["benchmark"]
     seed_everything(int(config["training"]["seed"]), bool(config["training"]["deterministic"]))
     threads = int(benchmark["threads"])
@@ -65,23 +78,42 @@ def run_benchmark(
     requested_device = config["training"]["device"]
     device = torch.device("cpu") if backend == "onnxruntime" else resolve_device(requested_device)
     model_path = Path(model_path)
+    if not model_path.is_file():
+        raise FileNotFoundError(f"Benchmark artifact does not exist: {model_path}")
     parameter_count: int | None = None
+    parameter_bytes: int | None = None
+    backend_version: str
+    providers: list[str] | None = None
     if backend == "pytorch":
         checkpoint = load_checkpoint(model_path, map_location=device)
+        validate_checkpoint_model_config(config, checkpoint)
         torch_model = build_model(config["model"]).to(device)
         torch_model.load_state_dict(checkpoint["model_state"])
         model: InferenceModel = torch_model
         parameter_count = count_parameters(torch_model)
+        parameter_bytes = sum(
+            parameter.numel() * parameter.element_size() for parameter in torch_model.parameters()
+        )
+        backend_version = torch.__version__
     elif backend == "torchscript":
         model = torch.jit.load(str(model_path), map_location=device)
         parameter_count = sum(parameter.numel() for parameter in model.parameters())
+        parameter_bytes = sum(
+            parameter.numel() * parameter.element_size() for parameter in model.parameters()
+        )
+        backend_version = torch.__version__
     elif backend == "onnxruntime":
         model = OnnxRuntimeModel(model_path, threads=threads)
+        backend_version = model.runtime_version
+        providers = model.providers
     else:
         raise ValueError(f"Unsupported backend: {backend}")
     model.eval()
 
     split = config["evaluation"]["split"]
+    validate_dataset(
+        config["data"]["manifest"], check_hashes=bool(config["data"]["validate_hashes"])
+    )
     dataset = SegmentationDataset(config["data"]["manifest"], split)
     accuracy_loader = make_dataloader(
         dataset,
@@ -120,16 +152,28 @@ def run_benchmark(
     mean_batch_ms = statistics.fmean(durations)
     result = {
         "backend": backend,
+        "backend_version": backend_version,
+        "execution_providers": providers,
         "model_path": str(model_path),
+        "model_sha256": _sha256(model_path),
         "model_size_bytes": _artifact_size(model_path),
         "model_size_note": "On-disk size including ONNX external-data sidecars, if present.",
+        "artifact_kind": ("training_checkpoint" if backend == "pytorch" else "deployment_artifact"),
         "parameters": parameter_count,
+        "parameter_bytes": parameter_bytes,
         "device": str(device),
+        "device_name": (torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU"),
         "torch_threads": threads,
         "batch_size": batch_size,
+        "input_shape": list(example.shape),
+        "timing_scope": "Model call only; excludes data loading and preprocessing.",
+        "timer": "time.perf_counter",
         "warmup_iterations": int(benchmark["warmup"]),
         "measured_iterations": int(benchmark["iterations"]),
         "latency_ms_per_batch_mean": mean_batch_ms,
+        "latency_ms_per_batch_stddev": statistics.pstdev(durations),
+        "latency_ms_per_batch_min": min(durations),
+        "latency_ms_per_batch_max": max(durations),
         "latency_ms_per_batch_p50": _percentile(durations, 50),
         "latency_ms_per_batch_p95": _percentile(durations, 95),
         "latency_ms_per_image_mean": mean_batch_ms / batch_size,
@@ -140,6 +184,7 @@ def run_benchmark(
         "mean_precision": accuracy["mean_precision"],
         "mean_recall": accuracy["mean_recall"],
         "pixel_map_foreground": accuracy["pixel_map_foreground"],
+        "environment": environment_metadata(),
     }
     write_json(output_path, result)
     return result

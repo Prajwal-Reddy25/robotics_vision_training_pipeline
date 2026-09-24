@@ -25,7 +25,7 @@ Both accept float32 NCHW RGB tensors in `[0, 1]` and return four-channel NCHW lo
 
 ## Metrics
 
-The evaluator emits pixel accuracy, precision, recall, IoU, mean IoU, confusion matrix, and foreground pixel mAP. Pixel mAP is a histogram approximation of one-vs-rest semantic pixel ranking; it is not COCO-style instance mAP. Worst per-image mean-IoU panels support qualitative error analysis.
+The evaluator emits pixel accuracy, precision, recall, IoU, present-union mean IoU, confusion matrix, and foreground pixel mAP. Undefined per-class ratios use zero, while mean IoU excludes classes absent from both truth and prediction. Pixel mAP is a bounded-memory histogram approximation of one-vs-rest semantic pixel ranking; it is not COCO-style instance mAP. Worst per-image mean-IoU panels support qualitative error analysis.
 
 ## Results
 

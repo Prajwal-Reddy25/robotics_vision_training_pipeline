@@ -10,10 +10,10 @@ This file records observed results from 2026-09-24, not projected performance or
 - CUDA unavailable; CUDA/AMP acceleration was not exercised
 - Torch-TensorRT unavailable; optional TensorRT export was not exercised
 - Ruff: passed
-- Pytest: 12 passed, including train/checkpoint/resume/evaluate/TorchScript integration
+- Pytest at initial implementation: 12 passed; the later audit suite and results are recorded in `AUDIT_REPORT.md`
 - Dataset validation: 180 samples, 126/27/27 train/validation/test, all SHA-256 checks passed
 
-The workspace was provided with an empty `.git` directory rather than an initialized repository, so `environment.json` correctly records `git_commit: null`.
+The original measured training artifacts were created before the repository was initialized, so their saved `environment.json` records `git_commit: null`. The later audit ran from initialized branch `main`; see the audit report for current checks.
 
 ## Architecture comparison
 

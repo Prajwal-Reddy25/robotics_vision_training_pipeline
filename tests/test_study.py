@@ -10,8 +10,8 @@ import yaml
 
 from robotics_vision.config import ConfigError, load_config
 from robotics_vision.domain import degradation
-from robotics_vision.engine import evaluate_model
-from robotics_vision.study import load_study, run_study
+from robotics_vision.engine import evaluate_model, train_one_epoch
+from robotics_vision.study import _save_report, load_study, run_study
 
 
 def _study_file(tmp_path: Path) -> Path:
@@ -97,3 +97,37 @@ def test_nonfinite_evaluation_fails_before_metric_accumulation() -> None:
     batch = {"image": torch.zeros(1, 3, 16, 16), "mask": torch.zeros(1, 16, 16, dtype=torch.long)}
     with pytest.raises(FloatingPointError, match="logits"):
         evaluate_model(Nonfinite(), [batch], torch.device("cpu"))
+
+
+def test_nonfinite_loss_does_not_step_optimizer() -> None:
+    model = torch.nn.Conv2d(3, 4, 1)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+    before = {key: value.clone() for key, value in model.state_dict().items()}
+    batch = {"image": torch.zeros(1, 3, 16, 16),
+             "mask": torch.zeros(1, 16, 16, dtype=torch.long)}
+
+    def nonfinite_loss(logits, targets):
+        return logits.sum() * float("nan")
+
+    with pytest.raises(FloatingPointError, match="training loss"):
+        train_one_epoch(model, [batch], optimizer, nonfinite_loss, torch.device("cpu"),
+                        torch.amp.GradScaler("cpu", enabled=False), False)
+    assert all(torch.equal(before[key], value) for key, value in model.state_dict().items())
+    assert not optimizer.state
+
+
+def test_interrupted_ledger_write_preserves_previous_json(tmp_path: Path, monkeypatch) -> None:
+    import robotics_vision.study as module
+
+    _save_report(tmp_path, {"records": [{"status": "started"}]})
+
+    def interrupted(path, report):
+        Path(path).write_text('{"partial":')
+        raise OSError("injected interrupted write")
+
+    monkeypatch.setattr(module, "write_json", interrupted)
+    with pytest.raises(OSError, match="interrupted"):
+        _save_report(tmp_path, {"records": [{"status": "success"}]})
+    assert json.loads((tmp_path / "study.json").read_text()) == {
+        "records": [{"status": "started"}]
+    }

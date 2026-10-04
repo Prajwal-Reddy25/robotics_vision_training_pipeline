@@ -61,6 +61,13 @@ def _distribution(values: list[float]) -> dict[str, Any]:
             "n": len(values), "values": values}
 
 
+def _save_report(output: Path, report: dict[str, Any]) -> None:
+    # A killed or interrupted JSON write must not destroy the last valid ledger.
+    temporary = output / "study.json.tmp"
+    write_json(temporary, report)
+    temporary.replace(output / "study.json")
+
+
 def summarize(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     successful = [record for record in records if record["status"] == "success"]
     groups = sorted({(r["architecture"], r["arm"]) for r in records})
@@ -123,7 +130,7 @@ def run_study(study_path: str | Path, output_dir: str | Path) -> dict[str, Any]:
         "expected_runs": len(spec["seeds"]) * len(spec["architectures"]) * len(spec["arms"]),
         "records": [], "complete": False,
     }
-    write_json(output / "study.json", report)
+    _save_report(output, report)
     for architecture in spec["architectures"]:
         for arm, overrides in spec["arms"].items():
             for seed in spec["seeds"]:
@@ -136,7 +143,7 @@ def run_study(study_path: str | Path, output_dir: str | Path) -> dict[str, Any]:
                 record = {"architecture": architecture, "arm": arm, "seed": seed,
                           "config": config, "status": "started"}
                 report["records"].append(record)
-                write_json(output / "study.json", report)
+                _save_report(output, report)
                 print(f"STUDY started {name}", flush=True)
                 try:
                     training = run_training(config)
@@ -154,10 +161,10 @@ def run_study(study_path: str | Path, output_dir: str | Path) -> dict[str, Any]:
                     (output / f"{name}.failure.txt").write_text(
                         traceback.format_exc(), encoding="utf-8"
                     )
-                write_json(output / "study.json", report)
+                _save_report(output, report)
                 print(f"STUDY {record['status']} {name}", flush=True)
     report["failed_runs"] = sum(r["status"] != "success" for r in report["records"])
     report["complete"] = len(report["records"]) == report["expected_runs"]
     report["summaries"] = summarize(report["records"])
-    write_json(output / "study.json", report)
+    _save_report(output, report)
     return report

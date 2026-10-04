@@ -16,7 +16,7 @@ will be manufactured or baseline results relabeled.
 | Assumptions | Fixed RGB color/class association, 64² top-down shapes, four classes, trusted pickle checkpoints, generator-level random splits; validation chooses best epoch. |
 | Limits | 180 images, only 27 held-out scenes, single seed, no real-camera data; approximate pixel AP; latency excludes preprocessing/transfers; CUDA determinism warns rather than fails. |
 | Weak coverage | No controlled domain shift, no multi-seed or augmentation study, no long-horizon AMP or TensorRT parity test, no transactional dataset creation. |
-| Debt | Broad dependency ranges, deprecated TorchScript/export compatibility APIs, unpinned CI action revisions, generated evidence previously ignored, no release changelog/roadmap, version/tag discrepancy. |
+| Debt | Broad dependency ranges, deprecated TorchScript/export compatibility APIs, unpinned CI action revisions, generated evidence previously ignored, no release changelog/roadmap, version/tag discrepancy. Exact resume compares manifest path rather than an embedded content digest and assumes immutable data. |
 | Best improvement | Paired severity-controlled domain-shift analysis and predeclared augmentation ablations, retaining all outcomes with hashes/configs/seed dispersion. |
 
 Baseline command: `env -u PYTHONPATH PYTEST_DISABLE_PLUGIN_AUTOLOAD=1

@@ -1,0 +1,9 @@
+{
+  "runs_verified": 42,
+  "paired_conditions": 13,
+  "condition_evaluations": 546,
+  "summary_recomputed": true,
+  "input_hashes_reproduced": true,
+  "metrics_recomputed_from_confusion": true,
+  "checkpoint_hashes_verified": true
+}

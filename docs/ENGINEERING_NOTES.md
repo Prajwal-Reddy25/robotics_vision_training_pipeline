@@ -18,8 +18,13 @@ do not choose epochs/arms with shifted test scores. External datasets and pretra
 models would change the problem and require separate licensing/split provenance.
 **Assumptions/failures:** palette is a powerful shortcut, floors dominate pixels,
 BatchNorm depends on training statistics, small test sets can reverse rankings.
-**Validation:** baseline suite plus seed-42 fresh training agrees with historical
-metrics; multi-seed results are reported in the ablation document.
+Exact resume additionally presumes immutable data: legacy checkpoints compare
+manifest paths and do not embed a content-identity gate. Study provenance verifies
+the actual data for these experiments; retrofitting checkpoint identity is separate work.
+**Validation:** baseline suite and fresh seed-42 training near historical metrics;
+small historical numerical differences are recorded rather than called gains.
+Exact repeats under the fresh CPU protocol match; multi-seed results are in the
+ablation document.
 **Interview questions:** Why compute class weights on train only? Why can an
 imbalanced model have high accuracy but poor cone IoU? What detail can LiteFCN's
 stride-4 representation lose? Where is the best epoch selected?
@@ -99,7 +104,8 @@ sqrt(Σ_s (q_s−q̄)²/(n−1)); it is null for n=1. Paired delta d_s = q_arm,s
 
 **Implementation:** strict study schema, validated augmentation-only arm changes,
 fresh output directory, resolved spec/hash, run ledger written before/after each
-attempt. Ordinary exceptions retain tracebacks and continue the matrix. CLI exits
+attempt; temporary write plus atomic replace preserves the last ledger if a write
+is interrupted. Ordinary exceptions retain tracebacks and continue the matrix. CLI exits
 nonzero if any attempt fails; no automatic overwrite/retry or successful-only
 selection. Interruptions leave started entries; exact training resume remains a
 separate CLI operation. A pretraining dataset failure aborts before the run matrix.
@@ -113,7 +119,8 @@ scene-level confidence interval, n=3 is small, repeated tests risk study overfit
 if a subsequent milestone tunes to these scores. Equal mean of 12 shifts assigns
 artificial equal prevalence and cannot estimate deployment risk.
 **Validation:** tiny full repeated study has identical condition metrics/hashes;
-injected first-run failure is persisted while the next run succeeds; real matrix
+injected first-run failure is persisted while the next run succeeds; interrupted
+ledger-write test preserves the previous JSON; real matrix
 counts/status/hashes are checked by evidence review. No acceptance gate requires
 positive accuracy improvement.
 **Interview questions:** Why paired seeds? What does SD quantify? Why is the test

@@ -4,6 +4,42 @@ A portfolio-grade, end-to-end PyTorch semantic-segmentation project for warehous
 
 No dataset or pretrained model is downloaded. The bundled generator creates small RGB warehouse scenes and four-class masks (`floor`, `obstacle`, `safety_cone`, `mobile_robot`) locally. Generated data, checkpoints, and deployment artifacts are Git-ignored.
 
+## v1.1: generalization and domain shift
+
+The existing models now have a controlled study of lighting, texture, blur, noise,
+planar viewpoint and foreground occlusion at two severities. All conditions use the
+same held-out scenes and corruption seeds. Seven augmentation arms across two
+models and three training seeds produced 42 measured runs and 546 evaluations.
+New training transforms default to zero; the original generator/models/default
+augmentation behavior and existing commands are preserved.
+
+```bash
+rv-study --study configs/ablation_smoke.yaml --output-dir runs/my_shift_smoke
+rv-study --study configs/ablation_v1_1.yaml --output-dir runs/my_ablation
+python scripts/review_v1_1.py --study runs/my_ablation/study.json
+```
+
+Use fresh output paths. Runs retain resolved configurations, source/transformed
+hashes, all per-seed metrics, raw latency samples, and explicit failure records.
+The full study uses CPU FP32, 15 epochs, data seed 17, training seeds 42/43/44 and
+corruption seed 2026. Best checkpoints are selected on nominal validation only.
+
+TinyUNet's baseline nominal mIoU is **0.6874 ± 0.1272** across seeds; LiteFCN's is
+**0.6070 ± 0.0166**. Adding occlusion augmentation changes mean shifted mIoU by
+**+5.73 percentage points** for TinyUNet and **−2.12 points** for LiteFCN.
+These synthetic results include negative experiments and do not establish
+real-world robustness. The original single-seed results remain dated historical
+evidence. This checkout lacked the stated v1.0.0 tag; owner-approved `54f3a2a` is
+the provisional baseline, as recorded in the audit. No baseline tag was invented.
+
+- [Domain-shift measurements](docs/DOMAIN_SHIFT_V1_1.md)
+- [Augmentation ablations, including negative results](docs/AUGMENTATION_ABLATION_V1_1.md)
+- [Validation and reproduction](docs/VALIDATION_V1_1.md)
+- [CPU/GPU benchmarks](docs/BENCHMARKS_V1_1.md)
+- [Engineering notes and owner competency checklist](docs/ENGINEERING_NOTES.md)
+- [Limitations](docs/LIMITATIONS.md), [release review](docs/RELEASE_READINESS_V1_1.md)
+- [Changelog](CHANGELOG.md), [roadmap](ROADMAP.md)
+
 ## Lifecycle
 
 ```mermaid
@@ -141,6 +177,11 @@ ruff check .
 ```
 
 Tests cover deterministic generation, ID/path/content leakage, checksum/label validation, deterministic paired augmentation, exact metric edge cases, both model shapes, bitwise CPU resume, dynamic TorchScript/ONNX equivalence, evaluation, benchmarking, and measured comparison output. GitHub Actions runs those checks plus the complete tiny lifecycle and both architectures on CPU.
+
+Additional tests cover paired shifts, homography/occlusion label semantics,
+augmentation bounds, legacy resume defaults, repeat-study equality, nonfinite
+loss/logit rejection, failure preservation and atomic study ledgers. CPU CI also
+runs a four-run domain-study smoke and uploads its evidence even on failure.
 
 ## Documentation
 

@@ -1,0 +1,16 @@
+{
+  "command": [
+    ".venv/bin/rv-export",
+    "--config",
+    "configs/domain_shift.yaml",
+    "--checkpoint",
+    "runs/v1_1_ablation/training/tiny_unet_baseline_s42/checkpoints/best.pt",
+    "--output-dir",
+    "runs/v1_1_tensorrt_probe",
+    "--no-onnx",
+    "--tensorrt"
+  ],
+  "expected_failure_observed": true,
+  "reason": "torch_tensorrt unavailable; no TensorRT execution claimed",
+  "returncode": 1
+}

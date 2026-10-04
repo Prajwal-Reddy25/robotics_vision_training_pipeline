@@ -1,0 +1,13 @@
+STUDY started tiny_unet_baseline_s9
+STUDY success tiny_unet_baseline_s9
+STUDY started tiny_unet_combined_s9
+STUDY success tiny_unet_combined_s9
+STUDY started lite_fcn_baseline_s9
+STUDY success lite_fcn_baseline_s9
+STUDY started lite_fcn_combined_s9
+STUDY success lite_fcn_combined_s9
+{
+  "failed_runs": 0,
+  "output": "runs/v1_1_ci_smoke",
+  "runs": 4
+}

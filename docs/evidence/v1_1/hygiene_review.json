@@ -1,0 +1,14 @@
+{
+  "markdown_links_checked": 21,
+  "broken_links": [],
+  "files_reviewed": 55,
+  "credential_pattern_matches": [],
+  "large_intentional_artifacts": [
+    {
+      "path": "docs/evidence/v1_1/study.json",
+      "bytes": 1984383
+    }
+  ],
+  "tracked_evidence_hashes_verified": 20,
+  "new_dependencies": false
+}

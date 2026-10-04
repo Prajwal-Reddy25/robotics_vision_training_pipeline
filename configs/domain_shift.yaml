@@ -1,0 +1,14 @@
+experiment:
+  name: domain_shift
+  output_dir: runs
+training:
+  epochs: 15
+  batch_size: 16
+  seed: 42
+  device: cpu
+  amp: false
+benchmark:
+  warmup: 20
+  iterations: 100
+  batch_size: 1
+  threads: 1

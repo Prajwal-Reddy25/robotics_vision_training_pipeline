@@ -36,6 +36,8 @@ def train_one_epoch(
         with torch.autocast(device_type=device.type, enabled=amp_enabled):
             logits = model(images)
             loss = criterion(logits, targets)
+        if not torch.isfinite(loss):
+            raise FloatingPointError("Non-finite training loss; checkpoint not advanced")
         scaler.scale(loss).backward()
         scaler.step(optimizer)
         scaler.update()
@@ -64,6 +66,8 @@ def evaluate_model(
         images = batch["image"].to(device, non_blocking=True)
         targets = batch["mask"].to(device, non_blocking=True)
         logits = model(images)
+        if not torch.isfinite(logits).all():
+            raise FloatingPointError("Non-finite evaluation logits")
         predictions = logits.argmax(dim=1)
         confusion.update(predictions, targets)
         ap.update(logits, targets)

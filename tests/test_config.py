@@ -50,6 +50,9 @@ def test_invalid_split_is_rejected(tmp_path: Path) -> None:
         ("data:\n  num_workers: -2\n", "data.num_workers"),
         ("experiment:\n  name: ../escape\n", "experiment.name"),
         ("training: invalid\n", "must be a mapping"),
+        ("augmentation:\n  blur_radius: -0.1\n", "blur_radius"),
+        ("augmentation:\n  viewpoint_inset: 0.5\n", "viewpoint_inset"),
+        ("augmentation:\n  occlusion_fraction: .nan\n", "occlusion_fraction"),
     ],
 )
 def test_invalid_operational_values_are_rejected(

@@ -9,9 +9,11 @@ from .benchmarking import run_benchmark
 from .comparison import compare_results
 from .config import load_config
 from .data import prepare_dataset, validate_dataset
+from .domain import run_domain_evaluation
 from .evaluation import run_evaluation
 from .exporting import run_export
 from .runlog import json_safe
+from .study import run_study
 from .training import run_training
 
 
@@ -108,3 +110,28 @@ def compare_main() -> None:
     parser.add_argument("--output-prefix", required=True)
     args = parser.parse_args()
     _print(compare_results(args.result, Path(args.output_prefix)))
+
+
+def domain_main() -> None:
+    parser = _config_parser("Evaluate paired synthetic domain shifts")
+    parser.add_argument("--checkpoint", required=True)
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--shift-seed", type=int, default=2026)
+    args = parser.parse_args()
+    report = run_domain_evaluation(
+        load_config(args.config, args.set), args.checkpoint, args.output, args.shift_seed,
+    )
+    _print({"output": args.output, "conditions": len(report["conditions"]),
+            "mean_shifted_iou": report["mean_shifted_iou"]})
+
+
+def study_main() -> None:
+    parser = argparse.ArgumentParser(description="Run a predeclared augmentation study")
+    parser.add_argument("--study", required=True)
+    parser.add_argument("--output-dir", required=True)
+    args = parser.parse_args()
+    report = run_study(args.study, args.output_dir)
+    _print({"output": args.output_dir, "runs": len(report["records"]),
+            "failed_runs": report["failed_runs"]})
+    if report["failed_runs"]:
+        raise SystemExit(1)

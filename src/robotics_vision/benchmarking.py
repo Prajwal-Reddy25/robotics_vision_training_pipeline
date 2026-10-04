@@ -198,6 +198,7 @@ def run_benchmark(
         "timer": "time.perf_counter",
         "warmup_iterations": int(benchmark["warmup"]),
         "measured_iterations": int(benchmark["iterations"]),
+        "latency_ms_samples": durations,
         "latency_ms_per_batch_mean": mean_batch_ms,
         "latency_ms_per_batch_stddev": statistics.pstdev(durations),
         "latency_ms_per_batch_min": min(durations),

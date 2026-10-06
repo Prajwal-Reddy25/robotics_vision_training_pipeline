@@ -61,7 +61,7 @@ def main():
                     for key in ("iou", "precision", "recall", "support_pixels"):
                         row[f"{endpoint}_{name}_{key}"] = metrics[key]
             if writer is None:
-                writer = csv.DictWriter(stream, fieldnames=list(row))
+                writer = csv.DictWriter(stream, fieldnames=list(row), lineterminator="\n")
                 writer.writeheader()
             writer.writerow(row)
     for source in Path(args.gallery).iterdir():

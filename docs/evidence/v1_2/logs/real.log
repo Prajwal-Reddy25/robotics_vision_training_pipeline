@@ -1,0 +1,179 @@
+REAL started tiny_unet no_aug 42 64
+REAL success
+REAL started tiny_unet no_aug 42 128
+REAL success
+REAL started tiny_unet no_aug 43 64
+REAL success
+REAL started tiny_unet no_aug 43 128
+REAL success
+REAL started tiny_unet no_aug 44 64
+REAL success
+REAL started tiny_unet no_aug 44 128
+REAL success
+REAL started tiny_unet baseline 42 64
+REAL success
+REAL started tiny_unet baseline 42 128
+REAL success
+REAL started tiny_unet baseline 43 64
+REAL success
+REAL started tiny_unet baseline 43 128
+REAL success
+REAL started tiny_unet baseline 44 64
+REAL success
+REAL started tiny_unet baseline 44 128
+REAL success
+REAL started tiny_unet blur 42 64
+REAL success
+REAL started tiny_unet blur 42 128
+REAL success
+REAL started tiny_unet blur 43 64
+REAL success
+REAL started tiny_unet blur 43 128
+REAL success
+REAL started tiny_unet blur 44 64
+REAL success
+REAL started tiny_unet blur 44 128
+REAL success
+REAL started tiny_unet texture 42 64
+REAL success
+REAL started tiny_unet texture 42 128
+REAL success
+REAL started tiny_unet texture 43 64
+REAL success
+REAL started tiny_unet texture 43 128
+REAL success
+REAL started tiny_unet texture 44 64
+REAL success
+REAL started tiny_unet texture 44 128
+REAL success
+REAL started tiny_unet viewpoint 42 64
+REAL success
+REAL started tiny_unet viewpoint 42 128
+REAL success
+REAL started tiny_unet viewpoint 43 64
+REAL success
+REAL started tiny_unet viewpoint 43 128
+REAL success
+REAL started tiny_unet viewpoint 44 64
+REAL success
+REAL started tiny_unet viewpoint 44 128
+REAL success
+REAL started tiny_unet occlusion 42 64
+REAL success
+REAL started tiny_unet occlusion 42 128
+REAL success
+REAL started tiny_unet occlusion 43 64
+REAL success
+REAL started tiny_unet occlusion 43 128
+REAL success
+REAL started tiny_unet occlusion 44 64
+REAL success
+REAL started tiny_unet occlusion 44 128
+REAL success
+REAL started tiny_unet combined 42 64
+REAL success
+REAL started tiny_unet combined 42 128
+REAL success
+REAL started tiny_unet combined 43 64
+REAL success
+REAL started tiny_unet combined 43 128
+REAL success
+REAL started tiny_unet combined 44 64
+REAL success
+REAL started tiny_unet combined 44 128
+REAL success
+REAL started lite_fcn no_aug 42 64
+REAL success
+REAL started lite_fcn no_aug 42 128
+REAL success
+REAL started lite_fcn no_aug 43 64
+REAL success
+REAL started lite_fcn no_aug 43 128
+REAL success
+REAL started lite_fcn no_aug 44 64
+REAL success
+REAL started lite_fcn no_aug 44 128
+REAL success
+REAL started lite_fcn baseline 42 64
+REAL success
+REAL started lite_fcn baseline 42 128
+REAL success
+REAL started lite_fcn baseline 43 64
+REAL success
+REAL started lite_fcn baseline 43 128
+REAL success
+REAL started lite_fcn baseline 44 64
+REAL success
+REAL started lite_fcn baseline 44 128
+REAL success
+REAL started lite_fcn blur 42 64
+REAL success
+REAL started lite_fcn blur 42 128
+REAL success
+REAL started lite_fcn blur 43 64
+REAL success
+REAL started lite_fcn blur 43 128
+REAL success
+REAL started lite_fcn blur 44 64
+REAL success
+REAL started lite_fcn blur 44 128
+REAL success
+REAL started lite_fcn texture 42 64
+REAL success
+REAL started lite_fcn texture 42 128
+REAL success
+REAL started lite_fcn texture 43 64
+REAL success
+REAL started lite_fcn texture 43 128
+REAL success
+REAL started lite_fcn texture 44 64
+REAL success
+REAL started lite_fcn texture 44 128
+REAL success
+REAL started lite_fcn viewpoint 42 64
+REAL success
+REAL started lite_fcn viewpoint 42 128
+REAL success
+REAL started lite_fcn viewpoint 43 64
+REAL success
+REAL started lite_fcn viewpoint 43 128
+REAL success
+REAL started lite_fcn viewpoint 44 64
+REAL success
+REAL started lite_fcn viewpoint 44 128
+REAL success
+REAL started lite_fcn occlusion 42 64
+REAL success
+REAL started lite_fcn occlusion 42 128
+REAL success
+REAL started lite_fcn occlusion 43 64
+REAL success
+REAL started lite_fcn occlusion 43 128
+REAL success
+REAL started lite_fcn occlusion 44 64
+REAL success
+REAL started lite_fcn occlusion 44 128
+REAL success
+REAL started lite_fcn combined 42 64
+REAL success
+REAL started lite_fcn combined 42 128
+REAL success
+REAL started lite_fcn combined 43 64
+REAL success
+REAL started lite_fcn combined 43 128
+REAL success
+REAL started lite_fcn combined 44 64
+REAL success
+REAL started lite_fcn combined 44 128
+REAL success
+{'evaluations': 84, 'failed': 0}
+Traceback (most recent call last):
+  File "/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/scripts/evaluate_real_v1_2.py", line 15, in <module>
+    report = run_real_study(args.source, args.manifest, args.output_dir, resume=args.resume)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/src/robotics_vision/real_evaluation.py", line 317, in run_real_study
+    finished = continue_report(report, _sha256(source_path), _sha256(manifest_path), expected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/src/robotics_vision/real_evaluation.py", line 262, in continue_report
+    raise ValueError("Study is already complete")
+ValueError: Study is already complete

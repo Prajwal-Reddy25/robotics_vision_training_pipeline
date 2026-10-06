@@ -1,0 +1,42 @@
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:89: FutureWarning: `torch.jit.save` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/src/robotics_vision/exporting.py:132: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+  torch.onnx.export(model, example, onnx_path, **export_options)
+W1006 12:09:43.162000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W1006 12:09:43.163000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W1006 12:09:43.163000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+W1006 12:09:43.163000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
+[0;93m2026-10-06 12:09:45.217004469 [W:onnxruntime:Default, telemetry.cc:800 operator()] Failed to persist telemetry device ID; using an in-memory identifier[m
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:89: FutureWarning: `torch.jit.save` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/src/robotics_vision/exporting.py:132: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+  torch.onnx.export(model, example, onnx_path, **export_options)
+W1006 12:09:57.598000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W1006 12:09:57.598000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W1006 12:09:57.598000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+W1006 12:09:57.599000 49 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::deform_conv2d
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+[torch.onnx] Obtain model graph for `TinyUNet([...]` with `torch.export.export(..., strict=False)`...
+[torch.onnx] Obtain model graph for `TinyUNet([...]` with `torch.export.export(..., strict=False)`... ✅
+[torch.onnx] Run decompositions...
+[torch.onnx] Run decompositions... ✅
+[torch.onnx] Translate the graph into ONNX...
+[torch.onnx] Translate the graph into ONNX... ✅
+[torch.onnx] Optimize the ONNX graph...
+[torch.onnx] Optimize the ONNX graph... ✅
+[torch.onnx] Obtain model graph for `LiteFCN([...]` with `torch.export.export(..., strict=False)`...
+[torch.onnx] Obtain model graph for `LiteFCN([...]` with `torch.export.export(..., strict=False)`... ✅
+[torch.onnx] Run decompositions...
+[torch.onnx] Run decompositions... ✅
+[torch.onnx] Translate the graph into ONNX...
+[torch.onnx] Translate the graph into ONNX... ✅
+[torch.onnx] Optimize the ONNX graph...
+[torch.onnx] Optimize the ONNX graph... ✅
+{"output": "runs/v1_2_deployment/validation.json", "mode": "cpu", "models": 2, "gpu_runs": 0}

@@ -184,6 +184,9 @@ error. IoU_c = C_cc / (row_c + column_c − C_cc); use only the two supported cl
 in this endpoint's macro average. Δ_sim2real = metric_projected_ID − metric_real;
 a negative gap is possible and is never clipped.
 
+Panoptic IDs use little-endian RGB packing: id = R + 2⁸G + 2¹⁶B. Segment IDs
+are looked up through annotation records; RGB bytes are not semantic class colors.
+
 **Implementation:** `real_data.py` reads official ZIP members over verified HTTPS
 byte ranges; checks CRC, pinned metadata SHA, segment IDs/areas, licensing, dimensions
 and input hashes. `real_evaluation.py` letterboxes RGB at 64/128, removes padding

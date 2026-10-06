@@ -7,19 +7,29 @@ existing models and three training seeds; per-class robustness, performance and
 failure evidence; engineering explanations and owner competency checklists.
 See [release readiness](docs/RELEASE_READINESS_V1_1.md) for actual gates and limits.
 
-## Proposed v1.2.0 — independent scene generalization
+## v1.2.0 candidate — real-photo evaluation implemented and measured
 
-Prioritize a versioned, license-reviewed real or higher-fidelity warehouse dataset
-with scene/camera/session group splits. Freeze an independent evaluation split
-before selecting augmentation settings. Measure class/boundary performance and
-scene-level uncertainty with paired bootstrap or repeated group splits. Investigate
-why severe dimming collapses minority-class IoU and why TinyUNet seed variation is
-large before increasing model count.
+All 42 frozen models, 80 licensed COCO real photographs, 84 native-ground-truth
+real dataset evaluations, all arms/seeds retained. Primary floor and restricted
+cabinet/storage metrics reveal large transfer gaps and a reversal of mean synthetic
+augmentation signs. No real-data tuning or additional architecture. See
+[real-data scope](docs/REAL_DATA_GENERALIZATION_V1_2.md) and
+[release readiness](docs/RELEASE_READINESS_V1_2.md).
 
-Proposed acceptance: traceable data license/hash/group provenance, leakage tests,
-independent nominal/shifted scene metrics with uncertainty, retained failed
-experiments, target-input preprocessing measurements, and documented mechanisms
-supported by experiments. Hardware claims require actual recorded hardware data.
+## Proposed v1.3.0 — representative warehouse adaptation experiment
+
+Obtain versioned human labels for all supported classes, with scene/camera/session
+grouped training/tuning/final-test splits and traceable licenses. Freeze a new test
+before adaptation; keep the v1.2 final test out of recipe tuning. Compare small,
+controlled interventions addressing palette/scene shortcuts or normalization,
+without expanding architecture count. Report per-class/boundary metrics, paired
+seed results and scene-level uncertainty; retain negative findings.
+
+Acceptance: compatible ontology with documented unknowns, group-leakage tests,
+independent final test, reproducible intervention configs, confidence intervals
+appropriate to scene sampling, fair nominal/OOD contrasts and all failures.
+Physical camera/robot claims require recorded physical observations; latency
+requires a stated full preprocessing/inference/postprocessing protocol.
 
 ## Subsequent engineering work — not implemented
 

@@ -1,0 +1,157 @@
+{
+  "commands": [
+    {
+      "command": "env -u PYTHONPATH PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 .venv/bin/pytest -q",
+      "criterion": "All applicable tests pass",
+      "log": "logs/cpu_tests.log",
+      "observed_result": "76 passed, 1 CUDA-only skip"
+    },
+    {
+      "command": "env -u PYTHONPATH PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 .venv-gpu/bin/pytest -q",
+      "criterion": "All tests including actual CUDA pass",
+      "log": "logs/cuda_tests.log",
+      "observed_result": "77 passed"
+    },
+    {
+      "command": ".venv/bin/ruff check .",
+      "log": "logs/lint.log",
+      "observed_result": "All checks passed"
+    },
+    {
+      "command": ".venv/bin/python -m pip check; .venv-gpu/bin/python -m pip check",
+      "log": "logs/dependencies.log",
+      "observed_result": "No broken requirements in both environments"
+    },
+    {
+      "command": ".venv/bin/python scripts/review_v1_1.py --study docs/evidence/v1_1/study.json",
+      "log": "logs/baseline_review.log",
+      "observed_result": "42 runs / 546 conditions verified"
+    },
+    {
+      "command": ".venv/bin/python scripts/review_real_v1_2.py",
+      "log": "logs/review.log",
+      "observed_result": "84 evaluations, 6720 images, native counts, source hashes and selection verified"
+    },
+    {
+      "command": ".venv/bin/python scripts/evaluate_real_v1_2.py --output-dir runs/v1_2_real",
+      "log": "logs/real.log",
+      "observed_result": "84 completed / 0 failures"
+    },
+    {
+      "command": ".venv/bin/python scripts/validate_v1_1.py --study docs/evidence/v1_1/study.json --output-dir runs/v1_2_deployment",
+      "log": "logs/deployment.log",
+      "observed_result": "2 full CPU repeats equal; TS/ONNX/ORT parity and benchmarks pass"
+    },
+    {
+      "command": ".venv-gpu/bin/python scripts/validate_v1_1.py --study docs/evidence/v1_1/study.json --output-dir runs/v1_2_gpu --gpu --deployment-dir runs/v1_2_deployment",
+      "log": "logs/gpu.log",
+      "observed_result": "4 finite CUDA FP32/AMP trains + 4 bitwise-equal resume probes; 4 synchronized benchmarks; prior CUDA limitation remains"
+    },
+    {
+      "command": ".venv/bin/python scripts/validate_real_v1_2.py",
+      "criterion": "Exact metrics; max_abs_logit_error <=0.0005 and argmax_agreement >=0.999",
+      "log": "logs/repro.log",
+      "observed_result": "2 exactly reproduced native datasets; 8 real-input TS/ORT parity comparisons"
+    },
+    {
+      "command": ".venv/bin/python -m pip wheel --no-deps --no-build-isolation --wheel-dir runs/v1_2_packaging .; install into runs/v1_2_packaging/wheel_import; isolated import",
+      "log": "logs/packaging.log",
+      "observed_result": "Wheel 1.2.0 built and imports from wheel target, not editable source"
+    },
+    {
+      "command": ".venv/bin/python scripts/prepare_real_v1_2.py",
+      "criterion": "Identical image/mask bytes, source metadata, semantic categories and selection ledger",
+      "log": "logs/data_identity.log",
+      "observed_result": "Cached original80-image dataset passes frozen-reference identity checks"
+    }
+  ],
+  "counts": {
+    "cuda_resume_invocations": 4,
+    "cuda_smoke_trainings": 4,
+    "frozen_trainings_reused": 42,
+    "full_cpu_repeat_trainings": 2,
+    "main_native_image_evaluations": 6720,
+    "main_real_dataset_evaluations": 84,
+    "new_experimental_trainings": 0,
+    "new_physics_simulations": 0,
+    "real_export_parity_comparisons": 8,
+    "repeat_real_dataset_evaluations": 2
+  },
+  "cpu_hardware": {
+    "CPU(s)": "32",
+    "Core(s) per socket": "16",
+    "Model name": "AMD Ryzen 9 8940HX with Radeon Graphics",
+    "Thread(s) per core": "2"
+  },
+  "criteria": {
+    "negative_metrics": "Retain all mean and individual seed losses; no minimum real-accuracy release threshold claimed.",
+    "scope": "Real-photo binary-floor and restricted-cabinet evaluation only; no full four-class warehouse validation."
+  },
+  "earlier_review_environment": {
+    "cuda_available": false,
+    "cuda_version": null,
+    "cudnn_version": null,
+    "git_commit": "f4c7ead79256048b2d377773bb38189f627edbdb",
+    "git_dirty": true,
+    "numpy": "2.5.3",
+    "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Jul 15 2026, 23:46:41) [GCC 13.3.0]",
+    "torch": "2.14.0+cpu"
+  },
+  "environment_at_final_review": {
+    "cuda_available": false,
+    "cuda_version": null,
+    "cudnn_version": null,
+    "git_commit": "1b8601591ec4212390f41ed243192ae85536a685",
+    "git_dirty": true,
+    "numpy": "2.5.3",
+    "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Jul 15 2026, 23:46:41) [GCC 13.3.0]",
+    "torch": "2.14.0+cpu"
+  },
+  "gpu_hardware": "NVIDIA GeForce RTX 5070 Laptop GPU",
+  "limitations": [
+    "No TensorRT stack available",
+    "No hosted CI run",
+    "No physical robot/camera data",
+    "Only two full CPU configurations independently retrained, not all42",
+    "GPU strict passing probes do not remove historical bitwise-resume failure"
+  ],
+  "packaged_modules_unchanged_since_tested_implementation": "1b86015",
+  "seeds": {
+    "functional_gpu_data": 7,
+    "functional_gpu_smoke": 9,
+    "real_selection_hash_prefix": 2026,
+    "synthetic_data": 17,
+    "synthetic_shift": 2026,
+    "training": [
+      42,
+      43,
+      44
+    ]
+  },
+  "source_files_sha256": {
+    "src/robotics_vision/__init__.py": "822a979900c1561c7377a52bf6941e433b7221408ce063cd7da5050260903cda",
+    "src/robotics_vision/benchmarking.py": "a741e66b64b98188d9e96a097a4d23b220cfa76557fbfb888b776986f57c00a8",
+    "src/robotics_vision/cli.py": "36aff26ad94eb48b094ec21b33e8d0627865fa061abd71469d402cdb2b05327f",
+    "src/robotics_vision/comparison.py": "b07d1a149b218b1a1e8a5199176e9ad257eb8f762772322b99ab35d602943577",
+    "src/robotics_vision/config.py": "b110f70ab634b367e57e9e4ccf447f05aa2606332a882469c36c0b3d7ebda79f",
+    "src/robotics_vision/data.py": "728b2382e08188ca9770a865a53a7ff98a87874efcf40036c906be563cb0be9f",
+    "src/robotics_vision/domain.py": "4dd7aba027af9b68a251c16967ce3a9267741d29e9fd359b58e16f7896d7cbf3",
+    "src/robotics_vision/engine.py": "d167c4abc2eacebd41f5811cfbe47fe152647ef4fbfd781962d43f9e67028f87",
+    "src/robotics_vision/evaluation.py": "a7b4862d39388377261c570adb1b5b86e4622c6ffa5aa5963db0a876c230b48a",
+    "src/robotics_vision/exporting.py": "2a8e67bd5dcb5f01205714cd3cffc75e72c936c655e5905c9d8b2c8195ea87e3",
+    "src/robotics_vision/metrics.py": "78d294aa52a2aded9b58067f99825fa9dd096949c0b72f9e4071ac5545343a34",
+    "src/robotics_vision/models.py": "8c88b56b1eb0115e3c274b5091fc0697e94c11ee7887e42c1de5f27972bbe005",
+    "src/robotics_vision/real_analysis.py": "518c64f20ac996731f039c7289e9a8b8438c8d4ba01d530d43dbead08c25106f",
+    "src/robotics_vision/real_data.py": "18ef462b1548a3f246d94f745e308616b4794cc9e5eb7137cefccae37c20036a",
+    "src/robotics_vision/real_evaluation.py": "5d74094254cb5e0b9086eb22ef61f1b45ce399c2dd248a84affa90a761777575",
+    "src/robotics_vision/reproducibility.py": "94fea68dd77d112d3cf37fbf55b68c43bc76df608413a687198e81d7ccb04b2b",
+    "src/robotics_vision/runlog.py": "8bbe650e8cb28775ac76a6135f5ca9fd36f45f90a88228f1f28f9fd797f61c44",
+    "src/robotics_vision/shifts.py": "aae31c0e28d809d39b8c0d8c77cc7bd21939fe21f479a0d3815ae5a0681a20af",
+    "src/robotics_vision/study.py": "faf2e21a59457304bac8566e6adbc884cb04a3dd595880f9462e2002b7274b4b",
+    "src/robotics_vision/training.py": "b200fa910ec1e27416968aa52fc42d4abec39b28d552fb2030c40dc5df0bac01"
+  },
+  "tensorrt_available": false,
+  "wheel_sha256": "d235179f4f34a41632d8b8b379d73d394627927564f3772be66ea1af4890f2b9"
+}

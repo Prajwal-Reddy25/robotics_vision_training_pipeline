@@ -1,0 +1,27 @@
+{
+  "deployment.json": {
+    "note": "Lossless compact JSON; whitespace differs from original.",
+    "original_path": "runs/v1_2_deployment/validation.json",
+    "original_sha256": "39e479c39a560319b52d7cd299786e134a8274b41008c737e382663455521659"
+  },
+  "gpu.json": {
+    "note": "Lossless compact JSON; whitespace differs from original.",
+    "original_path": "runs/v1_2_gpu/validation.json",
+    "original_sha256": "ba3bbdc2faba43a8ca7dd4a03e00ef7ccf8de62cd095387414b1eb7468e567f6"
+  },
+  "manifest.json": {
+    "note": "Lossless compact JSON; whitespace differs from original.",
+    "original_path": "data/external/coco_v1_2/manifest.json",
+    "original_sha256": "8913d754627923f036c2e226f3353b211399363fddfe5b2319aead58a49ca17c"
+  },
+  "reproducibility.json": {
+    "note": "Lossless compact JSON; whitespace differs from original.",
+    "original_path": "runs/v1_2_real/reproducibility.json",
+    "original_sha256": "11c68dfde1af45a30996157ab82cd6cd445841197a2534aa1645388ac9639a5d"
+  },
+  "study.json": {
+    "note": "Lossless compact JSON; whitespace differs from original.",
+    "original_path": "runs/v1_2_real/study.json",
+    "original_sha256": "11405350a520a818ffad242c2c229f910f0b7940fdd032d0f3b3032392ae3523"
+  }
+}

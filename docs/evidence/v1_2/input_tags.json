@@ -1,0 +1,36 @@
+{
+  "annotation_method": "Agent visual inspection of all 80 input thumbnails before any real-model prediction; descriptive tags, not human-certified or physical measurements.",
+  "manifest_sha256": "8913d754627923f036c2e226f3353b211399363fddfe5b2319aead58a49ca17c",
+  "predictions_inspected": false,
+  "selection_note": "Tags are examples, not exhaustive labels; no thresholds or model configuration chosen from them.",
+  "tags": {
+    "blur": [
+      554291,
+      94326
+    ],
+    "domain_specific_clutter": [
+      475678,
+      333772
+    ],
+    "lighting": [
+      464358,
+      520707
+    ],
+    "occlusion": [
+      397133,
+      383842
+    ],
+    "shadows": [
+      343468,
+      319935
+    ],
+    "texture": [
+      415194,
+      458410
+    ],
+    "viewpoint": [
+      331352,
+      68765
+    ]
+  }
+}

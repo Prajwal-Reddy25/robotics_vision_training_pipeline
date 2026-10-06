@@ -167,3 +167,62 @@ size? What does export parity prove? Why is a synthetic speed test not robot lat
 
 This checklist describes personal understanding required to present the feature as
 a portfolio skill; execution of the code does not certify the owner's competency.
+
+## Real-data adapter and metric projections (v1.2)
+
+**Problem:** the synthetic four-class label space has no exact public real-data
+counterpart. Treating furniture, people or unknown background as arbitrary model
+classes would give a misleading sim-to-real score.
+
+**Principle:** evaluate only defined semantic correspondences. For confusion C
+(rows truth, columns prediction), binary projection is B = P C Pᵀ, with
+P = [[1,0,0,0],[0,1,1,1]]. The real-data truth projection assigns source floor
+categories 118/190 to 0 and other annotated categories to 1. Void/crowd are excluded.
+For the restricted endpoint, retain truth rows floor/cabinet and all four prediction
+columns: predicting cone/robot on a labelled floor/cabinet pixel still creates an
+error. IoU_c = C_cc / (row_c + column_c − C_cc); use only the two supported classes
+in this endpoint's macro average. Δ_sim2real = metric_projected_ID − metric_real;
+a negative gap is possible and is never clipped.
+
+**Implementation:** `real_data.py` reads official ZIP members over verified HTTPS
+byte ranges; checks CRC, pinned metadata SHA, segment IDs/areas, licensing, dimensions
+and input hashes. `real_evaluation.py` letterboxes RGB at 64/128, removes padding
+from argmax predictions and restores them to native ground-truth dimensions.
+Ground truth stays native. Frozen checkpoints and nominal confusion matrices come
+from the immutable v1.1 study. No training/validation split is invented for this
+external test set: no real-data tuning is allowed.
+
+**Decisions/alternatives:** retain existing models/dependencies/training pipeline.
+A full four-class map, pseudo-labels or Hypersim would respectively distort semantics,
+replace ground truth, or remain synthetic. Binary floor transfer is the primary
+endpoint; cabinet-as-storage-obstacle is explicitly a narrow secondary subset.
+Selection is metadata-only with a fixed hash order, before any model prediction.
+Input size sensitivity is predeclared; it is not test-set hyperparameter selection.
+
+**Assumptions:** COCO panoptic human annotations define visible floor; cabinet
+furniture belongs to the synthetic static-obstacle concept. Selected domestic/public
+interiors are genuinely real, but not representative industrial warehouse scenes.
+**Failure modes:** semantic mismatch, floor sampling bias, native boundary errors
+from low-resolution logits, invalid/corrupt annotations, silent void inclusion,
+unsupported-class false predictions and distribution-dependent BatchNorm behavior.
+**Validation:** see offline native-geometry/projection/ignore/corruption tests in
+`tests/test_real_data.py` and `tests/test_real_evaluation.py`. Actual photo results
+will be recorded in the v1.2 evidence and analysis documents; tests alone establish
+no generalization improvement.
+**Interview questions:** Why not compare four-class ID mIoU to binary real mIoU?
+Why can ignored cabinet-surrounding pixels inflate apparent secondary accuracy?
+What does this class mapping fail to establish? Why restore predictions instead of
+shrinking labels? How could final-test tuning create experiment leakage?
+
+## Owner competency checklist — v1.2 experiment design
+
+- [ ] Derive the binary confusion projection and the restricted rectangular label-space metric.
+- [ ] Trace `prepare_real_dataset` → manifest validation → `letterbox` → native predictions.
+- [ ] Explain domain shift, distribution mismatch, augmentation and synthetic-to-real transfer.
+- [ ] Explain overfitting, nominal validation checkpoint selection and final-test leakage.
+- [ ] Explain why there is no real validation split when there is no real-data tuning.
+- [ ] Compute per-class IoU/precision/recall and identify undefined/ignored classes.
+- [ ] Distinguish training-seed variance from uncertainty across images or datasets.
+- [ ] Locate opposite architecture-dependent v1.1 augmentation results and check their real-data signs.
+- [ ] Explain why synthetic corruption correlations are descriptive and not causal evidence.
+- [ ] Identify limitations of synthetic benchmarks, partial labels and selected COCO interiors.

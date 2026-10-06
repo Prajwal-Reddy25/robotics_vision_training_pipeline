@@ -229,10 +229,62 @@ shrinking labels? How could final-test tuning create experiment leakage?
 
 ### Interrupted real-study continuation
 
-A server restart stopped the first real-data collection after 63 completed
-measurements with one `started` entry. `continue_report` checks source and dataset
+A server restart detached the worker while its ledger showed 63 completed
+measurements and one `started` entry. The original worker subsequently completed
+all 84; attempted continuation correctly refused an already-complete study.
+No actual evaluation was retried or marked interrupted. `continue_report` checks source and dataset
 hashes and the predeclared evaluation keys before continuing. Successful and failed
 terminal results stay immutable; only incomplete attempts are retried, and their
 `interrupted` records remain. Duplicate terminal keys and changed input hashes
 fail. This is a ledger continuation, independent of optimizer checkpoint/resume.
 The injected interruption/changed-input test verifies that prior evidence survives.
+
+## Paired statistics and failure selection (v1.2)
+
+**Problem:** a favorable seed or a synthetic-corruption ranking can be mistaken
+for reliable real-data improvement. **Principle:** within each fixed architecture,
+Δ_s = metric_augmented,s − metric_baseline,s; report all three values and
+sample SD sqrt(Σ_s(Δ_s − mean Δ)²/(n−1)). These three training seeds do not estimate
+uncertainty over new datasets. Spearman ρ is Pearson correlation of average ranks;
+constant ranks return null, not an invented zero. Correlating drops shares the ID
+term, so also inspect raw score correlations. No p-values or causal mechanism claims.
+
+**Implementation:** `real_analysis.py` refuses incomplete matrices, retains negative
+values, groups all seven arms/seeds and computes paired differences and within-model
+21-run associations. `review_real_v1_2.py` independently checks native per-image
+confusion sums, metric arithmetic, source/data hashes and the metadata-only subset.
+`gallery_real_v1_2.py` selects baseline seed42 worst/lower-median/best floor IoU
+and the lower-scoring member of each input-tag pair, then shows both architectures'
+baseline and occlusion predictions. Selection is deterministic and recorded.
+
+**Decisions/alternatives:** use existing NumPy/standard library, average tied ranks,
+no new statistics dependency. Do not pool architectures into a potentially
+confounded correlation or choose arms from real scores. A scene/bootstrap confidence
+interval would answer a different question and is left to a representative dataset
+milestone, not substituted for measured optimization SD.
+
+**Assumptions:** seed pairing improves comparability on fixed training/evaluation
+splits; image-level pixel aggregation deliberately weights large images more.
+**Failure modes:** shared-term/spurious associations, non-independent arms/seeds,
+large seed dispersion, scene-selection bias, missing author attribution and subjective
+tags. A thumbnail ID typo (343468 → 343466) was corrected against source metadata;
+the original pre-prediction tags are retained and the correction is explicit.
+**Validation:** known tied/negative/constant correlation and sample-SD tests;
+complete-matrix gate; all 84 native metric records recomputed; exact repeat real
+metrics from both reproduced baseline checkpoints; gallery predictions checked
+against stored per-image counts. Flickr lookup failures are provenance limits,
+not exclusions from numerical evaluation.
+**Interview questions:** Why report paired SD rather than subtract group SDs?
+Why is a positive drop correlation insufficient to select a corruption surrogate?
+How could pixel pooling hide minority-scene failure? What does a retained bad example
+or a neutral seed contribute to the engineering claim?
+
+## Owner competency checklist — v1.2 measured evidence
+
+- [ ] Recompute baseline/occlusion/combined real deltas from each seed in `real_runs.csv`.
+- [ ] Explain the reversal of the synthetic mean augmentation signs and the mixed seed signs.
+- [ ] Explain why real binary mIoU gains can coexist with nearly unchanged floor IoU.
+- [ ] Locate floor/cabinet gaps and state why cone/robot gaps are null.
+- [ ] Contrast drop-gap versus score-score correlations and explain the common-ID confound.
+- [ ] Read a failure panel and distinguish false floor, missed floor, void and unsupported predictions.
+- [ ] Explain which data-selection, attribution, CUDA and hardware limitations remain.

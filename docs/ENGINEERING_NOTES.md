@@ -297,9 +297,19 @@ image/mask hashes, source annotation records, selection and semantic categories 
 the tracked original manifest. Renaming the data root is permitted; silently changing
 the final test contents is not. The offline test replaces an image and updates its
 local hash: ordinary integrity succeeds, frozen-reference identity correctly fails.
-The original80-image manifest passes this new gate unchanged; measured metrics are
+The original 80-image manifest passes this new gate unchanged; measured metrics are
 not recomputed or altered by this validation-only change. Captured Pillow versions
 matter because a lossless mask can serialize to different PNG bytes across versions.
-The native boundary band uses a radius3 square (Chebyshev) dilation of valid
+The native boundary band uses a radius 3 square (Chebyshev) dilation of valid
 floor/nonfloor adjacency edges, excluding void pixels; it is not a calibrated
 physical boundary-distance measure.
+
+### Class-gap comparison requires identical evaluation masks
+
+Primary floor and restricted storage IoUs have different false-positive eligibility.
+Ranking their gaps against each other would be invalid. The v1.2 analysis records
+restricted floor IoU/gap alongside storage on the identical shared mask. Storage
+has the larger shared-mask gap in both baseline models; broad binary floor failure
+remains severe separately. Source: `real_analysis.observed_values` and the class table
+in `SIM_TO_REAL_ANALYSIS_V1_2.md`. Explain why ignoring other categories changes
+a floor union even when all predictions stay identical.

@@ -110,6 +110,11 @@ There is no real validation split because no real-data tuning is performed.
 | Binary | 118/190 floor; others nonfloor | 0 floor; 1/2/3 nonfloor | void/crowd |
 | Restricted | floor0, cabinet188 → 1 | all four prediction columns | other GT ignored |
 
+Source categories are 118 `floor-wood`, 190 `floor-other-merged`, 188 `cabinet-merged`.
+Rugs and other categories keep their COCO semantics; this is not a traversability
+map. Real walls/furniture are novel nonfloor categories absent from the synthetic
+object vocabulary, so the primary score includes semantic-complexity mismatch.
+
 Cabinets are a narrow static-obstacle subset. COCO has no compatible safety-cone
 or mobile-robot ground truth. Those class gaps are null, not zero. Unsupported
 categories are not relabelled to manufacture compatibility. Restricted metrics
@@ -170,7 +175,10 @@ measurements reject changed original checkpoint hashes. Two original configurati
 repeats independently proved best-weight and native-metric equality in this environment;
 all 42 repeat trainings were not rerun for v1.2. Endpoint availability/license metadata
 can change; pinned annotations and expected hashes fail closed. Internet is required
-only to prepare external data. HTTPS ZIP range requests avoid downloading the entire
+only to prepare external data. Scripts compare fresh image/mask/source identities
+with the tracked original manifest; updated local hashes cannot redefine this test.
+Use the captured Pillow version to preserve deterministic PNG serialization.
+HTTPS ZIP range requests avoid downloading the entire
 860MB annotation bundle; TLS is never disabled. No new dependency is introduced.
 `--resume` is only for a stopped ledger with identical source/data; failed terminal
 attempts stay failed, completed studies cannot be resumed. Never attach a second

@@ -55,6 +55,7 @@ def observed_values(record: dict) -> dict:
         "real_mean_precision": binary["mean_precision"],
         "real_mean_recall": binary["mean_recall"],
         "real_shared_miou": shared["mean_iou"],
+        "real_shared_floor_iou": shared["per_class"]["floor"]["iou"],
         "real_storage_iou": shared["per_class"]["storage_obstacle"]["iou"],
         "id_binary_miou": record["id_binary"]["mean_iou"],
         "id_four_class_miou": record["id_four_class_miou"],
@@ -63,6 +64,8 @@ def observed_values(record: dict) -> dict:
         ),
         "gap_binary_miou": record["delta_sim2real"]["binary_miou"],
         "gap_floor_iou": record["delta_sim2real"]["floor_iou"],
+        "gap_shared_floor_iou": record["id_shared"]["per_class"]["floor"]["iou"]
+        - shared["per_class"]["floor"]["iou"],
         "gap_storage_iou": record["delta_sim2real"]["storage_iou"],
         "boundary_error_rate": real["boundary_error_rate"],
         "interior_error_rate": real["interior_error_rate"],

@@ -47,6 +47,11 @@ def main():
         nominal = reference["domain"]["conditions"]["nominal"]["confusion_matrix"]
         assert r["id_binary"] == binary_metrics(nominal)
         assert r["id_shared"] == restricted_metrics(nominal)
+        assert r["checkpoint_bytes"] == Path(r["checkpoint"]).stat().st_size
+        assert r["projected_shifts"] == {
+            name: binary_metrics(condition["confusion_matrix"])
+            for name, condition in reference["domain"]["conditions"].items()
+        }
         measured = r["measured"]
         assert len(measured["per_image"]) == len(ids)
         assert {i["id"] for i in measured["per_image"]} == ids
@@ -58,9 +63,14 @@ def main():
         assert shared[1].sum() == data["storage_pixels"]
         assert np.all(shared[2:] == 0)
         assert np.isclose(shared.sum() / binary.sum(), measured["shared_pixel_coverage"])
-        assert r["delta_sim2real"]["binary_miou"] == (
-            r["id_binary"]["mean_iou"] - measured["binary"]["mean_iou"]
-        )
+        assert r["delta_sim2real"] == {
+            "binary_miou": r["id_binary"]["mean_iou"] - measured["binary"]["mean_iou"],
+            "floor_iou": r["id_binary"]["per_class"]["floor"]["iou"]
+            - measured["binary"]["per_class"]["floor"]["iou"],
+            "shared_miou": r["id_shared"]["mean_iou"] - measured["shared"]["mean_iou"],
+            "storage_iou": r["id_shared"]["per_class"]["storage_obstacle"]["iou"]
+            - measured["shared"]["per_class"]["storage_obstacle"]["iou"],
+        }
         for name in ("boundary", "interior"):
             errors = sum(i[f"{name}_errors"] for i in measured["per_image"])
             pixels = sum(i[f"{name}_pixels"] for i in measured["per_image"])

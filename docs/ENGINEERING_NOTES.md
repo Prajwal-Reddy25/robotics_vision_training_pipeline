@@ -226,3 +226,13 @@ shrinking labels? How could final-test tuning create experiment leakage?
 - [ ] Locate opposite architecture-dependent v1.1 augmentation results and check their real-data signs.
 - [ ] Explain why synthetic corruption correlations are descriptive and not causal evidence.
 - [ ] Identify limitations of synthetic benchmarks, partial labels and selected COCO interiors.
+
+### Interrupted real-study continuation
+
+A server restart stopped the first real-data collection after 63 completed
+measurements with one `started` entry. `continue_report` checks source and dataset
+hashes and the predeclared evaluation keys before continuing. Successful and failed
+terminal results stay immutable; only incomplete attempts are retried, and their
+`interrupted` records remain. Duplicate terminal keys and changed input hashes
+fail. This is a ledger continuation, independent of optimizer checkpoint/resume.
+The injected interruption/changed-input test verifies that prior evidence survives.

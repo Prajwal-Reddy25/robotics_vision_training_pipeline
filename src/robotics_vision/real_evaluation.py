@@ -252,9 +252,41 @@ def time_model(model: torch.nn.Module, size: int) -> dict:
     }
 
 
-def run_real_study(source_path: str | Path, manifest_path: str | Path, output: str | Path) -> dict:
+def evaluation_key(record: dict) -> tuple:
+    return tuple(record[field] for field in ("architecture", "arm", "seed", "size"))
+
+
+def continue_report(report: dict, source_hash: str, manifest_hash: str, expected: set) -> set:
+    """Keep terminal attempts; retry only explicitly recorded interrupted work."""
+    if report["complete"]:
+        raise ValueError("Study is already complete")
+    if report["source_study_sha256"] != source_hash or report["manifest_sha256"] != manifest_hash:
+        raise ValueError("Continuation requires identical frozen source and data")
+    finished = set()
+    for record in report["records"]:
+        key = evaluation_key(record)
+        if key not in expected or record["status"] not in {
+            "success",
+            "failed",
+            "started",
+            "interrupted",
+        }:
+            raise ValueError("Unexpected evaluation attempt")
+        if record["status"] in {"success", "failed"}:
+            if key in finished:
+                raise ValueError("Duplicate terminal evaluation")
+            finished.add(key)
+        elif record["status"] == "started":
+            record.update(status="interrupted", reason="Process stopped before a terminal record")
+    report.setdefault("continuations", []).append(environment_metadata())
+    return finished
+
+
+def run_real_study(
+    source_path: str | Path, manifest_path: str | Path, output: str | Path, resume: bool = False
+) -> dict:
     output = Path(output)
-    output.mkdir(parents=True, exist_ok=False)
+    output.mkdir(parents=True, exist_ok=resume)
     source_path, manifest_path = Path(source_path), Path(manifest_path)
     source = json.loads(source_path.read_text())
     if not source["complete"] or source["failed_runs"] or len(source["records"]) != 42:
@@ -274,6 +306,15 @@ def run_real_study(source_path: str | Path, manifest_path: str | Path, output: s
         "expected_evaluations": 84,
         "complete": False,
     }
+    finished = set()
+    if resume:
+        report = json.loads((output / "study.json").read_text())
+        expected = {
+            (r["architecture"], r["arm"], r["seed"], size)
+            for r in source["records"]
+            for size in (64, 128)
+        }
+        finished = continue_report(report, _sha256(source_path), _sha256(manifest_path), expected)
 
     def save():
         temporary = output / "study.json.tmp"
@@ -312,6 +353,8 @@ def run_real_study(source_path: str | Path, manifest_path: str | Path, output: s
         }
         for size in (64, 128):
             entry = {**identity, "size": size, "status": "started"}
+            if evaluation_key(entry) in finished:
+                continue
             report["records"].append(entry)
             save()
             print(
@@ -339,7 +382,12 @@ def run_real_study(source_path: str | Path, manifest_path: str | Path, output: s
                 )
             save()
             print(f"REAL {entry['status']}", flush=True)
-    report["failed_evaluations"] = sum(r["status"] != "success" for r in report["records"])
-    report["complete"] = len(report["records"]) == report["expected_evaluations"]
+    report["failed_evaluations"] = sum(r["status"] == "failed" for r in report["records"])
+    report["interrupted_attempts"] = sum(r["status"] == "interrupted" for r in report["records"])
+    report["successful_evaluations"] = sum(r["status"] == "success" for r in report["records"])
+    terminal = {
+        evaluation_key(r) for r in report["records"] if r["status"] in {"success", "failed"}
+    }
+    report["complete"] = len(terminal) == report["expected_evaluations"]
     save()
     return report

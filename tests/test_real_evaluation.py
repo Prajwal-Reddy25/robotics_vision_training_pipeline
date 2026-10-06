@@ -92,3 +92,27 @@ def test_offline_evaluation_is_native_repeatable_and_does_not_mutate_model(tmp_p
     assert first["shared"]["per_class"]["storage_obstacle"]["recall"] == 0
     assert first["samples"] == 1 and first["shared_pixel_coverage"] == 1
     assert all(torch.equal(state[k], v) for k, v in model.state_dict().items())
+
+
+def test_continuation_preserves_results_interruptions_and_rejects_changed_inputs():
+    from robotics_vision.real_evaluation import continue_report
+
+    identity = {"architecture": "lite_fcn", "arm": "baseline", "seed": 42}
+    success = {**identity, "size": 64, "status": "success", "measured": {"sentinel": 3}}
+    started = {**identity, "size": 128, "status": "started"}
+    report = {
+        "complete": False,
+        "source_study_sha256": "a",
+        "manifest_sha256": "b",
+        "records": [copy.deepcopy(success), started],
+    }
+    expected = {("lite_fcn", "baseline", 42, size) for size in (64, 128)}
+    with pytest.raises(ValueError, match="identical"):
+        continue_report(copy.deepcopy(report), "changed", "b", expected)
+    finished = continue_report(report, "a", "b", expected)
+    assert finished == {("lite_fcn", "baseline", 42, 64)}
+    assert report["records"][0] == success
+    assert report["records"][1]["status"] == "interrupted"
+    report["records"].append(copy.deepcopy(success))
+    with pytest.raises(ValueError, match="Duplicate"):
+        continue_report(report, "a", "b", expected)

@@ -2,7 +2,77 @@
 
 A portfolio-grade, end-to-end PyTorch semantic-segmentation project for warehouse robotics. It covers deterministic data generation, validation and leakage-safe splits; paired augmentation; configurable CPU/CUDA training; full-state checkpoint/resume; evaluation and error analysis; TorchScript/ONNX export; ONNX Runtime deployment; and measured accuracy/performance comparisons.
 
-No dataset or pretrained model is downloaded. The bundled generator creates small RGB warehouse scenes and four-class masks (`floor`, `obstacle`, `safety_cone`, `mobile_robot`) locally. Generated data, checkpoints, and deployment artifacts are Git-ignored.
+The default synthetic lifecycle is offline and downloads no dataset or pretrained model. v1.2 adds an explicit, optional download of licensed real evaluation photographs; it never downloads pretrained weights. The bundled generator creates small RGB warehouse scenes and four-class masks (`floor`, `obstacle`, `safety_cone`, `mobile_robot`) locally. Generated data, checkpoints, and deployment artifacts are Git-ignored.
+
+## v1.2: real-photo transfer, including failed generalization
+
+All 42 frozen v1.1 models were evaluated on 80 independently sourced COCO photographs,
+with native public panoptic ground truth: 84 dataset evaluations at 64²/128², three
+training seeds, seven augmentation arms, no real-data tuning. The supported tasks
+are binary floor recognition and a restricted cabinet/storage-obstacle subset;
+cones/mobile robots and physical robot perception remain unvalidated.
+
+At 64², baseline real binary mIoU is **0.1913 ± 0.0365 TinyUNet / 0.2711 ± 0.0809
+LiteFCN**. Occlusion augmentation changes it **−0.0091 / +0.0089**, reversing the
+synthetic mean signs under the same binary metric projection, with mixed seed signs.
+Floor IoU remains only 0.1271/0.1314. Disabling baseline augmentation improves all
+three real-test seeds in both models. These are measured transfer failures and
+qualified contrasts, not a deployed robustness claim.
+
+```bash
+python scripts/prepare_real_v1_2.py
+python scripts/evaluate_real_v1_2.py --output-dir runs/my_real_study
+python scripts/review_real_v1_2.py --study runs/my_real_study/study.json
+```
+
+The evaluator requires the 42 locally generated v1.1 checkpoints. Use fresh output
+paths; see the real-data report for regeneration when those ignored files are absent.
+The original v1.1 commit `d9a74a0` is the frozen baseline; its local tag is absent.
+No new architecture/dependency or experimental training is added.
+
+- [Dataset, label mapping, all measured arms and reproduction](docs/REAL_DATA_GENERALIZATION_V1_2.md)
+- [Five research questions and qualified conclusions](docs/SIM_TO_REAL_ANALYSIS_V1_2.md)
+- [Success/failure gallery and class/boundary analysis](docs/FAILURE_ANALYSIS_V1_2.md)
+- [CPU/GPU performance](docs/BENCHMARKS_V1_2.md)
+- [Release gates](docs/RELEASE_READINESS_V1_2.md), [release notes](docs/RELEASE_NOTES_V1_2.md)
+
+## v1.1: generalization and domain shift
+
+The existing models now have a controlled study of lighting, texture, blur, noise,
+planar viewpoint and foreground occlusion at two severities. All conditions use the
+same held-out scenes and corruption seeds. Seven augmentation arms across two
+models and three training seeds produced 42 measured runs and 546 evaluations.
+New training transforms default to zero; the original generator/models/default
+augmentation behavior and existing commands are preserved.
+
+```bash
+rv-study --study configs/ablation_smoke.yaml --output-dir runs/my_shift_smoke
+rv-study --study configs/ablation_v1_1.yaml --output-dir runs/my_ablation
+python scripts/review_v1_1.py --study runs/my_ablation/study.json
+```
+
+Use fresh output paths. Runs retain resolved configurations, source/transformed
+hashes, all per-seed metrics, raw latency samples, and explicit failure records.
+The full study uses CPU FP32, 15 epochs, data seed 17, training seeds 42/43/44 and
+corruption seed 2026. Best checkpoints are selected on nominal validation only.
+
+TinyUNet's baseline nominal mIoU is **0.6874 ± 0.1272** across seeds; LiteFCN's is
+**0.6070 ± 0.0166**. Adding occlusion augmentation changes mean shifted mIoU by
+**+5.73 percentage points** for TinyUNet and **−2.12 points** for LiteFCN.
+These synthetic results include negative experiments and do not establish
+real-world robustness. The original single-seed results remain dated historical
+evidence. The initial checkout lacked the stated v1.0.0 tag; owner-approved `54f3a2a` was
+the provisional baseline. A v1.0.0 tag has since appeared at that commit. The v1.1
+frozen commit is `d9a74a0`; no local v1.1 tag exists. Historical audits retain their
+original checkout observations.
+
+- [Domain-shift measurements](docs/DOMAIN_SHIFT_V1_1.md)
+- [Augmentation ablations, including negative results](docs/AUGMENTATION_ABLATION_V1_1.md)
+- [Validation and reproduction](docs/VALIDATION_V1_1.md)
+- [CPU/GPU benchmarks](docs/BENCHMARKS_V1_1.md)
+- [Engineering notes and owner competency checklist](docs/ENGINEERING_NOTES.md)
+- [Limitations](docs/LIMITATIONS.md), [release review](docs/RELEASE_READINESS_V1_1.md)
+- [Changelog](CHANGELOG.md), [roadmap](ROADMAP.md)
 
 ## Lifecycle
 
@@ -131,7 +201,7 @@ artifacts/<experiment>/
   model.torchscript.pt model.onnx metadata.json
 ```
 
-These paths are excluded from Git because datasets and model binaries do not belong in source history.
+These paths are excluded from Git because datasets and model binaries do not belong in source history. v1.2 also ignores `data/external/`; bounded JSON/CSV diagnostics and licensed gallery figures are tracked under `docs/evidence/v1_2/`.
 
 ## Quality gates
 
@@ -141,6 +211,11 @@ ruff check .
 ```
 
 Tests cover deterministic generation, ID/path/content leakage, checksum/label validation, deterministic paired augmentation, exact metric edge cases, both model shapes, bitwise CPU resume, dynamic TorchScript/ONNX equivalence, evaluation, benchmarking, and measured comparison output. GitHub Actions runs those checks plus the complete tiny lifecycle and both architectures on CPU.
+
+Additional tests cover paired shifts, homography/occlusion label semantics,
+augmentation bounds, legacy resume defaults, repeat-study equality, nonfinite
+loss/logit rejection, failure preservation and atomic study ledgers. CPU CI also
+runs a four-run domain-study smoke and uploads its evidence even on failure.
 
 ## Documentation
 
@@ -155,4 +230,4 @@ Tests cover deterministic generation, ID/path/content leakage, checksum/label va
 
 ## License
 
-Code is MIT licensed. Scenes produced by the bundled generator are dedicated to the public domain under CC0-1.0 as recorded in every manifest. See the dataset card before substituting external data.
+Code is MIT licensed. Bundled synthetic scenes are CC0-1.0 as recorded in manifests. External COCO annotations are CC BY 4.0 and selected photographs have source-metadata CC BY 2.0; they are not covered by the code license. See the [real-data contract](docs/REAL_DATA_GENERALIZATION_V1_2.md) and [gallery attribution](docs/evidence/v1_2/gallery/ATTRIBUTION.md).

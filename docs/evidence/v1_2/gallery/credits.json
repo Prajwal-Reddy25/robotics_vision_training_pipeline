@@ -1,0 +1,110 @@
+[
+  {
+    "author_name": "DeclanTM",
+    "author_url": "https://www.flickr.com/photos/declanjewell/",
+    "coco_id": 68765,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/1501351467/",
+    "source_static_url": "http://farm3.staticflickr.com/2131/1501351467_a73502f414_z.jpg",
+    "title": "Keyboard & Mouse"
+  },
+  {
+    "author_name": "Mechatronics Guy",
+    "author_url": "https://www.flickr.com/photos/38462165@N05/",
+    "coco_id": 206218,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/7161410855/",
+    "source_static_url": "http://farm8.staticflickr.com/7223/7161410855_58ae7f38c2_z.jpg",
+    "title": "Science Tripod, V01."
+  },
+  {
+    "author_name": "@joefoodie",
+    "author_url": "https://www.flickr.com/photos/montage_man/",
+    "coco_id": 256916,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/3674288028/",
+    "source_static_url": "http://farm4.staticflickr.com/3304/3674288028_5e877e3b64_z.jpg",
+    "title": "Pizzas"
+  },
+  {
+    "author_name": null,
+    "author_url": null,
+    "coco_id": 287347,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/5250579638/",
+    "source_static_url": "http://farm6.staticflickr.com/5089/5250579638_55e8ea39b1_z.jpg",
+    "title": null
+  },
+  {
+    "author_name": "mikes rite",
+    "author_url": "https://www.flickr.com/photos/mac-minimalist/",
+    "coco_id": 333772,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/4212612461/",
+    "source_static_url": "http://farm5.staticflickr.com/4038/4212612461_ca16f4e7fb_z.jpg",
+    "title": "G4 flat panel iMac - kitchen computer"
+  },
+  {
+    "author_name": "SJU Undergraduate Admissions",
+    "author_url": "https://www.flickr.com/photos/sjuadmissions/",
+    "coco_id": 343466,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/7831368930/",
+    "source_static_url": "http://farm9.staticflickr.com/8421/7831368930_5c1244e182_z.jpg",
+    "title": "community kitchen"
+  },
+  {
+    "author_name": "Chairman of the Joint Chiefs of Staff",
+    "author_url": "https://www.flickr.com/photos/thejointstaff/",
+    "coco_id": 383842,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/4536776986/",
+    "source_static_url": "http://farm5.staticflickr.com/4023/4536776986_0e75095fcb_z.jpg",
+    "title": "100419-N-0696M-216"
+  },
+  {
+    "author_name": "amy_elizabeth_west",
+    "author_url": "https://www.flickr.com/photos/amy_elizabeth_west/",
+    "coco_id": 458410,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/4586518760/",
+    "source_static_url": "http://farm5.staticflickr.com/4009/4586518760_6b3d02f30f_z.jpg",
+    "title": "basement living 4"
+  },
+  {
+    "coco_id": 464358,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "lookup_failure": "HTTPError: HTTP Error 404: Not Found",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/474446555/",
+    "source_static_url": "http://farm1.staticflickr.com/224/474446555_8c2af75370_z.jpg"
+  },
+  {
+    "author_name": "santanartist",
+    "author_url": "https://www.flickr.com/photos/dottieday/",
+    "coco_id": 498919,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/508669075/",
+    "source_static_url": "http://farm1.staticflickr.com/226/508669075_b4ad2fd7e5_z.jpg",
+    "title": "Fruit in the market"
+  },
+  {
+    "author_name": "Eirik Newth",
+    "author_url": "https://www.flickr.com/photos/eiriknewth/",
+    "coco_id": 554291,
+    "license": "https://creativecommons.org/licenses/by/2.0/",
+    "modifications": "Photograph resized into diagnostic ground-truth/prediction panel.",
+    "source": "https://www.flickr.com/photos/_/256248429/",
+    "source_static_url": "http://farm1.staticflickr.com/103/256248429_ebcfe37830_z.jpg",
+    "title": "Cats in a bowl"
+  }
+]

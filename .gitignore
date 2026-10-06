@@ -11,6 +11,7 @@ dist/
 
 # Generated data, runs, and model artifacts
 data/processed/
+data/external/
 runs/
 artifacts/
 *.pt

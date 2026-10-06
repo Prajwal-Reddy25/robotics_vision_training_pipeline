@@ -38,3 +38,16 @@ jobs:
           rv-benchmark --config configs/smoke.yaml --set experiment.name=smoke_lite --set model.architecture=lite_fcn --model runs/smoke_lite/checkpoints/best.pt --backend pytorch --output runs/smoke_lite/benchmark.json
           rv-benchmark --config configs/smoke.yaml --model runs/smoke/checkpoints/best.pt --backend pytorch --output runs/smoke/benchmark.json
           rv-compare --result tiny_unet=runs/smoke/benchmark.json --result lite_fcn=runs/smoke_lite/benchmark.json --output-prefix runs/comparison
+      - name: Controlled domain-shift study smoke
+        env:
+          OMP_NUM_THREADS: "1"
+          MKL_NUM_THREADS: "1"
+        run: rv-study --study configs/ablation_smoke.yaml --output-dir runs/ci_domain_shift
+      - name: Preserve study evidence including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-shift-smoke
+          path: |
+            runs/ci_domain_shift/study.json
+            runs/ci_domain_shift/*.failure.txt

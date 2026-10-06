@@ -1,0 +1,15 @@
+WARNING: The directory '/home/ironman/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: robotics-vision-training-pipeline
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): started
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): finished with status 'done'
+  Created wheel for robotics-vision-training-pipeline: filename=robotics_vision_training_pipeline-1.2.0-py3-none-any.whl size=55340 sha256=d235179f4f34a41632d8b8b379d73d394627927564f3772be66ea1af4890f2b9
+  Stored in directory: /tmp/pip-ephem-wheel-cache-fuej3zge/wheels/e6/31/c8/1a5f0617ef7259a0d0ac77a03e466df3b03a08aec0a39e99a0
+Successfully built robotics-vision-training-pipeline
+WARNING: The directory '/home/ironman/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Processing ./runs/v1_2_packaging/robotics_vision_training_pipeline-1.2.0-py3-none-any.whl
+Installing collected packages: robotics-vision-training-pipeline
+Successfully installed robotics-vision-training-pipeline-1.2.0
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/runs/v1_2_packaging/final_wheel_import/robotics_vision/__init__.py

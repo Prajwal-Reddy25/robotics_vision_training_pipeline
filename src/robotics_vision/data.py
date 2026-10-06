@@ -351,6 +351,10 @@ class AugmentationConfig:
     brightness: float = 0.15
     contrast: float = 0.15
     gaussian_noise_std: float = 0.02
+    blur_radius: float = 0.0
+    texture_strength: float = 0.0
+    viewpoint_inset: float = 0.0
+    occlusion_fraction: float = 0.0
 
 
 class SegmentationDataset(Dataset[dict[str, Any]]):
@@ -402,6 +406,21 @@ class SegmentationDataset(Dataset[dict[str, Any]]):
             noise_rng = np.random.default_rng(local_seed + 1)
             noise = noise_rng.normal(0.0, aug.gaussian_noise_std, image_array.shape)
             image_array = np.clip(image_array + noise, 0.0, 1.0).astype(np.float32)
+        additions = (
+            ("blur", aug.blur_radius), ("texture", aug.texture_strength),
+            ("viewpoint", aug.viewpoint_inset), ("occlusion", aug.occlusion_fraction),
+        )
+        if aug.enabled and any(maximum > 0 for _, maximum in additions):
+            # Local import keeps the existing data generator independent of stressors.
+            from .shifts import apply_shift
+
+            image = Image.fromarray(np.rint(image_array * 255).astype(np.uint8))
+            for kind, maximum in additions:
+                if maximum > 0:
+                    image, mask = apply_shift(
+                        image, mask, kind, rng.uniform(0, maximum), local_seed + 2
+                    )
+            image_array = np.asarray(image, dtype=np.float32) / 255.0
         image_tensor = torch.from_numpy(image_array.transpose(2, 0, 1).copy())
         mask_tensor = torch.from_numpy(np.asarray(mask, dtype=np.int64).copy())
         return {"image": image_tensor, "mask": mask_tensor, "id": record["id"]}

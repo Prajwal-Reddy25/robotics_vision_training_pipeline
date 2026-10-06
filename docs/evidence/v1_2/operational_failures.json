@@ -1,0 +1,32 @@
+{
+  "attribution_lookup": {
+    "corrected_format": "photos/_/<photoid>/",
+    "creators_recovered": 9,
+    "creators_unresolved": 2,
+    "first_failed_lookups": 11,
+    "first_url_format": "photo.gne?id=...",
+    "numerical_images_excluded": 0,
+    "photos_omitted_from_tracked_panels": [
+      287347,
+      464358
+    ]
+  },
+  "historical_cuda_resume_failure": "Preserved docs/evidence/v1_1/gpu_initial_failure.json and log; max difference 1.7881393432617188e-7.",
+  "model_evaluation_failures": 0,
+  "retained_quality_losses": "All arms and all seeds are in study.json / real_runs.csv; losses are not execution failures.",
+  "server_restart": {
+    "actual_final_completed": 84,
+    "actual_interrupted_evaluations": 0,
+    "continuation_exit": 1,
+    "log": "logs/real.log",
+    "reason": "Original worker continued; continuation rejected already-complete study.",
+    "snapshot_completed": 63,
+    "snapshot_started": 1
+  },
+  "tag_transcription": {
+    "corrected_id": 343466,
+    "error": "KeyError: 343468 during gallery ID lookup",
+    "initial_id": 343468,
+    "reason": "One thumbnail ID was transcribed incorrectly; original tags retained."
+  }
+}

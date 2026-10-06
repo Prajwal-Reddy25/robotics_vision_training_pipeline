@@ -27,6 +27,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "brightness": 0.15,
         "contrast": 0.15,
         "gaussian_noise_std": 0.02,
+        "blur_radius": 0.0,
+        "texture_strength": 0.0,
+        "viewpoint_inset": 0.0,
+        "occlusion_fraction": 0.0,
     },
     "model": {"architecture": "tiny_unet", "num_classes": 4, "base_channels": 8},
     "training": {
@@ -176,6 +180,9 @@ def validate_config(config: dict[str, Any]) -> None:
     _require_float(augmentation["brightness"], "augmentation.brightness", 0.0, 1.0)
     _require_float(augmentation["contrast"], "augmentation.contrast", 0.0, 1.0)
     _require_float(augmentation["gaussian_noise_std"], "augmentation.gaussian_noise_std", 0.0, 1.0)
+    for key, maximum in (("blur_radius", 1.4), ("texture_strength", 0.4),
+                         ("viewpoint_inset", 0.2), ("occlusion_fraction", 0.15)):
+        _require_float(augmentation.get(key, 0.0), f"augmentation.{key}", 0.0, maximum)
 
     if config["model"]["architecture"] not in {"tiny_unet", "lite_fcn"}:
         raise ConfigError("model.architecture must be tiny_unet or lite_fcn")

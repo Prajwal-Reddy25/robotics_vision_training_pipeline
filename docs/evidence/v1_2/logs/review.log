@@ -1,0 +1,14 @@
+{
+  "frozen_training_runs": 42,
+  "dataset_evaluations_verified": 84,
+  "native_image_evaluations": 6720,
+  "data": {
+    "samples": 80,
+    "native_pixels": 21994306,
+    "valid_pixels": 20123139,
+    "storage_pixels": 1644495,
+    "hashes_checked": true
+  },
+  "aggregate_groups_recomputed": 28,
+  "correlations_recomputed": 48
+}

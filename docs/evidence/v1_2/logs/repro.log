@@ -1,0 +1,4 @@
+[0;93m2026-10-06 12:49:20.695699510 [W:onnxruntime:Default, telemetry.cc:800 operator()] Failed to persist telemetry device ID; using an in-memory identifier[m
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+{'repeated_dataset_evaluations': 2, 'export_parity_comparisons': 8}

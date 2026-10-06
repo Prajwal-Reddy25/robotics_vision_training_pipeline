@@ -9,7 +9,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from .config import config_fingerprint, save_config, validate_config
+from .config import DEFAULT_CONFIG, config_fingerprint, save_config, validate_config
 from .data import (
     CLASS_NAMES,
     SegmentationDataset,
@@ -113,7 +113,9 @@ def _validate_resume_config(current: dict[str, Any], previous: dict[str, Any]) -
     for section, key in immutable_paths:
         if current[section][key] != previous[section][key]:
             mismatches.append(f"{section}.{key}")
-    if current["augmentation"] != previous["augmentation"]:
+    current_aug = {**DEFAULT_CONFIG["augmentation"], **current["augmentation"]}
+    previous_aug = {**DEFAULT_CONFIG["augmentation"], **previous["augmentation"]}
+    if current_aug != previous_aug:
         mismatches.append("augmentation")
     if mismatches:
         raise ValueError(f"Resume configuration changes training trajectory: {mismatches}")

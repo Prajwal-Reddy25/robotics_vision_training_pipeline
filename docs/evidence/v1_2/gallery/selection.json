@@ -1,0 +1,187 @@
+{
+  "error_colors": "red false floor, blue missed floor, gray void",
+  "input_tag_id_corrections": {
+    "343468": 343466
+  },
+  "models": "baseline/occlusion seed42 at64; no selection by arm.",
+  "panels": [
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.08957624102760375,
+        "lite_fcn:occlusion": 0.09313975326570366,
+        "tiny_unet:baseline": 0.04274415611624914,
+        "tiny_unet:occlusion": 0.049165387567152725
+      },
+      "id": 68765,
+      "path": "68765.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:viewpoint:lower_floor_iou"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.6397215749266608,
+        "lite_fcn:occlusion": 0.7213453950534116,
+        "tiny_unet:baseline": 0.5768796391197342,
+        "tiny_unet:occlusion": 0.7113517550410754
+      },
+      "id": 206218,
+      "path": "206218.png",
+      "photo_included": true,
+      "roles": [
+        "tiny_unet:relatively_best",
+        "lite_fcn:relatively_best"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.13563052542766657,
+        "lite_fcn:occlusion": 0.08489016471455106,
+        "tiny_unet:baseline": 0.0805857515048064,
+        "tiny_unet:occlusion": 0.08561313163823624
+      },
+      "id": 256916,
+      "path": "256916.png",
+      "photo_included": true,
+      "roles": [
+        "tiny_unet:lower_median"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.006461955238533136,
+        "lite_fcn:occlusion": 0.0014991293517995319,
+        "tiny_unet:baseline": 0.0022719485124324,
+        "tiny_unet:occlusion": 0.0007658836698452242
+      },
+      "id": 287347,
+      "path": "287347.png",
+      "photo_included": false,
+      "roles": [
+        "tiny_unet:worst"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.09207704984848754,
+        "lite_fcn:occlusion": 0.13581017254677655,
+        "tiny_unet:baseline": 0.08198117574448388,
+        "tiny_unet:occlusion": 0.1010148670573822
+      },
+      "id": 333772,
+      "path": "333772.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:domain_specific_clutter:lower_floor_iou",
+        "lite_fcn:lower_median"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.039371909537612576,
+        "lite_fcn:occlusion": 0.038227680452712055,
+        "tiny_unet:baseline": 0.03399767102568564,
+        "tiny_unet:occlusion": 0.036157613028128914
+      },
+      "id": 343466,
+      "path": "343466.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:shadows:lower_floor_iou"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.044594310663790056,
+        "lite_fcn:occlusion": 0.042846729916881224,
+        "tiny_unet:baseline": 0.039107986378117104,
+        "tiny_unet:occlusion": 0.04292278622348192
+      },
+      "id": 383842,
+      "path": "383842.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:occlusion:lower_floor_iou"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.20095712901259855,
+        "lite_fcn:occlusion": 0.18378404109381558,
+        "tiny_unet:baseline": 0.19651093407302284,
+        "tiny_unet:occlusion": 0.24600889013950747
+      },
+      "id": 458410,
+      "path": "458410.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:texture:lower_floor_iou"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.06703045954646761,
+        "lite_fcn:occlusion": 0.06646292536842244,
+        "tiny_unet:baseline": 0.030698732962866578,
+        "tiny_unet:occlusion": 0.03214882786837087
+      },
+      "id": 464358,
+      "path": "464358.png",
+      "photo_included": false,
+      "roles": [
+        "pretag:lighting:lower_floor_iou"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.0,
+        "lite_fcn:occlusion": 0.027218290691344585,
+        "tiny_unet:baseline": 0.0998526539423637,
+        "tiny_unet:occlusion": 0.06205073122366356
+      },
+      "id": 498919,
+      "path": "498919.png",
+      "photo_included": true,
+      "roles": [
+        "lite_fcn:worst"
+      ]
+    },
+    {
+      "floor_iou": {
+        "lite_fcn:baseline": 0.006782290962784994,
+        "lite_fcn:occlusion": 0.00463512622174252,
+        "tiny_unet:baseline": 0.012932018529019715,
+        "tiny_unet:occlusion": 0.020317523960799132
+      },
+      "id": 554291,
+      "path": "554291.png",
+      "photo_included": true,
+      "roles": [
+        "pretag:blur:lower_floor_iou"
+      ]
+    }
+  ],
+  "prediction_palette": [
+    [
+      55,
+      170,
+      85
+    ],
+    [
+      100,
+      110,
+      120
+    ],
+    [
+      245,
+      195,
+      35
+    ],
+    [
+      150,
+      60,
+      185
+    ]
+  ]
+}

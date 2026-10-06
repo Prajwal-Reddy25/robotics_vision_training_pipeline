@@ -1,0 +1,22 @@
+version: 1
+base_config: domain_shift.yaml
+seeds: [42, 43, 44]
+architectures: [tiny_unet, lite_fcn]
+shift_seed: 2026
+arms:
+  no_aug:
+    enabled: false
+  baseline: {}
+  blur:
+    blur_radius: 1.4
+  texture:
+    texture_strength: 0.4
+  viewpoint:
+    viewpoint_inset: 0.2
+  occlusion:
+    occlusion_fraction: 0.15
+  combined:
+    blur_radius: 1.4
+    texture_strength: 0.4
+    viewpoint_inset: 0.2
+    occlusion_fraction: 0.15

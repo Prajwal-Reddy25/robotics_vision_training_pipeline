@@ -1,0 +1,245 @@
+{
+  "environment": {
+    "cuda_available": true,
+    "cuda_version": "13.0",
+    "cudnn_version": 92400,
+    "git_commit": "4e7a9cc9fe92e3de561a74d14db0573d9ff2b940",
+    "git_dirty": false,
+    "numpy": "2.5.3",
+    "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Jul 15 2026, 23:46:41) [GCC 13.3.0]",
+    "torch": "2.14.0+cu130"
+  },
+  "gpu_name": "NVIDIA GeForce RTX 5070 Laptop GPU",
+  "gpu_training": [
+    {
+      "amp": false,
+      "architecture": "tiny_unet",
+      "bitwise_resume": true,
+      "config": {
+        "augmentation": {
+          "blur_radius": 0.0,
+          "brightness": 0.15,
+          "contrast": 0.15,
+          "enabled": true,
+          "gaussian_noise_std": 0.02,
+          "horizontal_flip_probability": 0.5,
+          "occlusion_fraction": 0.0,
+          "texture_strength": 0.0,
+          "viewpoint_inset": 0.0
+        },
+        "benchmark": {
+          "batch_size": 1,
+          "iterations": 3,
+          "threads": 1,
+          "warmup": 1
+        },
+        "data": {
+          "image_size": 32,
+          "manifest": "data/processed/smoke/manifest.json",
+          "num_samples": 24,
+          "num_workers": 0,
+          "root": "data/processed/smoke",
+          "seed": 7,
+          "split": {
+            "test": 0.25,
+            "train": 0.5,
+            "val": 0.25
+          },
+          "validate_hashes": true
+        },
+        "evaluation": {
+          "ap_bins": 32,
+          "save_worst": 2,
+          "split": "test"
+        },
+        "experiment": {
+          "name": "tiny_unet_fp32",
+          "output_dir": "runs/v1_1_gpu/training"
+        },
+        "model": {
+          "architecture": "tiny_unet",
+          "base_channels": 4,
+          "num_classes": 4
+        },
+        "training": {
+          "amp": false,
+          "batch_size": 4,
+          "deterministic": true,
+          "device": "cuda",
+          "epochs": 2,
+          "learning_rate": 0.002,
+          "resume": null,
+          "save_every": 1,
+          "seed": 9,
+          "weight_decay": 0.0
+        }
+      },
+      "finite_model_optimizer": true,
+      "resumed": {
+        "amp_enabled": false,
+        "best_checkpoint": "runs/v1_1_gpu/training/tiny_unet_fp32_resumed/checkpoints/best.pt",
+        "best_epoch": 1,
+        "best_val_mean_iou": 0.018818805455142952,
+        "checkpoint": "runs/v1_1_gpu/training/tiny_unet_fp32_resumed/checkpoints/last.pt",
+        "device": "cuda",
+        "last_epoch": {
+          "epoch": 1,
+          "epoch_seconds": 0.07516761899933044,
+          "learning_rate": 0.001,
+          "train_loss": 1.3144231239954631,
+          "val_loss": 1.4992271264394124,
+          "val_mean_iou": 0.018818805455142952,
+          "val_mean_precision": 0.02085059465244334,
+          "val_mean_recall": 0.21396396396396394,
+          "val_pixel_accuracy": 0.061360677083333336,
+          "val_pixel_map_foreground": 0.064453125
+        },
+        "parameters": 7632,
+        "run_dir": "runs/v1_1_gpu/training/tiny_unet_fp32_resumed"
+      },
+      "scaler_state": {},
+      "training": {
+        "amp_enabled": false,
+        "best_checkpoint": "runs/v1_1_gpu/training/tiny_unet_fp32/checkpoints/best.pt",
+        "best_epoch": 1,
+        "best_val_mean_iou": 0.018818805455142952,
+        "checkpoint": "runs/v1_1_gpu/training/tiny_unet_fp32/checkpoints/last.pt",
+        "device": "cuda",
+        "last_epoch": {
+          "epoch": 1,
+          "epoch_seconds": 0.09476678300052299,
+          "learning_rate": 0.001,
+          "train_loss": 1.3144231239954631,
+          "val_loss": 1.4992271264394124,
+          "val_mean_iou": 0.018818805455142952,
+          "val_mean_precision": 0.02085059465244334,
+          "val_mean_recall": 0.21396396396396394,
+          "val_pixel_accuracy": 0.061360677083333336,
+          "val_pixel_map_foreground": 0.064453125
+        },
+        "parameters": 7632,
+        "run_dir": "runs/v1_1_gpu/training/tiny_unet_fp32"
+      }
+    },
+    {
+      "amp": true,
+      "architecture": "tiny_unet",
+      "bitwise_resume": true,
+      "config": {
+        "augmentation": {
+          "blur_radius": 0.0,
+          "brightness": 0.15,
+          "contrast": 0.15,
+          "enabled": true,
+          "gaussian_noise_std": 0.02,
+          "horizontal_flip_probability": 0.5,
+          "occlusion_fraction": 0.0,
+          "texture_strength": 0.0,
+          "viewpoint_inset": 0.0
+        },
+        "benchmark": {
+          "batch_size": 1,
+          "iterations": 3,
+          "threads": 1,
+          "warmup": 1
+        },
+        "data": {
+          "image_size": 32,
+          "manifest": "data/processed/smoke/manifest.json",
+          "num_samples": 24,
+          "num_workers": 0,
+          "root": "data/processed/smoke",
+          "seed": 7,
+          "split": {
+            "test": 0.25,
+            "train": 0.5,
+            "val": 0.25
+          },
+          "validate_hashes": true
+        },
+        "evaluation": {
+          "ap_bins": 32,
+          "save_worst": 2,
+          "split": "test"
+        },
+        "experiment": {
+          "name": "tiny_unet_amp",
+          "output_dir": "runs/v1_1_gpu/training"
+        },
+        "model": {
+          "architecture": "tiny_unet",
+          "base_channels": 4,
+          "num_classes": 4
+        },
+        "training": {
+          "amp": true,
+          "batch_size": 4,
+          "deterministic": true,
+          "device": "cuda",
+          "epochs": 2,
+          "learning_rate": 0.002,
+          "resume": null,
+          "save_every": 1,
+          "seed": 9,
+          "weight_decay": 0.0
+        }
+      },
+      "finite_model_optimizer": true,
+      "resumed": {
+        "amp_enabled": true,
+        "best_checkpoint": "runs/v1_1_gpu/training/tiny_unet_amp_resumed/checkpoints/best.pt",
+        "best_epoch": 1,
+        "best_val_mean_iou": 0.01907686849418218,
+        "checkpoint": "runs/v1_1_gpu/training/tiny_unet_amp_resumed/checkpoints/last.pt",
+        "device": "cuda",
+        "last_epoch": {
+          "epoch": 1,
+          "epoch_seconds": 0.06273444599901268,
+          "learning_rate": 0.001,
+          "train_loss": 1.3157164653142293,
+          "val_loss": 1.4992498954137166,
+          "val_mean_iou": 0.01907686849418218,
+          "val_mean_precision": 0.021270523112641854,
+          "val_mean_recall": 0.21415165165165165,
+          "val_pixel_accuracy": 0.061360677083333336,
+          "val_pixel_map_foreground": 0.064453125
+        },
+        "parameters": 7632,
+        "run_dir": "runs/v1_1_gpu/training/tiny_unet_amp_resumed"
+      },
+      "scaler_state": {
+        "_growth_tracker": 6,
+        "backoff_factor": 0.5,
+        "growth_factor": 2.0,
+        "growth_interval": 2000,
+        "scale": 65536.0
+      },
+      "training": {
+        "amp_enabled": true,
+        "best_checkpoint": "runs/v1_1_gpu/training/tiny_unet_amp/checkpoints/best.pt",
+        "best_epoch": 1,
+        "best_val_mean_iou": 0.01907686849418218,
+        "checkpoint": "runs/v1_1_gpu/training/tiny_unet_amp/checkpoints/last.pt",
+        "device": "cuda",
+        "last_epoch": {
+          "epoch": 1,
+          "epoch_seconds": 0.0797097209997446,
+          "learning_rate": 0.001,
+          "train_loss": 1.3157164653142293,
+          "val_loss": 1.4992498954137166,
+          "val_mean_iou": 0.01907686849418218,
+          "val_mean_precision": 0.021270523112641854,
+          "val_mean_recall": 0.21415165165165165,
+          "val_pixel_accuracy": 0.061360677083333336,
+          "val_pixel_map_foreground": 0.064453125
+        },
+        "parameters": 7632,
+        "run_dir": "runs/v1_1_gpu/training/tiny_unet_amp"
+      }
+    }
+  ],
+  "mode": "cuda",
+  "models": [],
+  "study_sha256": "21d0d30974712869f028acf623ced80f8fc669fc7ac44ec1f2a2b2190d709d63"
+}

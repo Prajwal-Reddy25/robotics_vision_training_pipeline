@@ -19,10 +19,11 @@ def main():
     parser.add_argument("--study", default="runs/v1_2_real/study.json")
     parser.add_argument("--source", default="docs/evidence/v1_1/study.json")
     parser.add_argument("--manifest", default="data/external/coco_v1_2/manifest.json")
+    parser.add_argument("--reference-manifest", default="docs/evidence/v1_2/manifest.json")
     args = parser.parse_args()
     study = json.loads(Path(args.study).read_text())
     source = json.loads(Path(args.source).read_text())
-    data = validate_real_dataset(args.manifest)
+    data = validate_real_dataset(args.manifest, args.reference_manifest)
     manifest = json.loads(Path(args.manifest).read_text())
     annotation_path = Path(args.manifest).parent / "panoptic_val2017.json"
     assert _sha256(annotation_path) == ANNOTATION_SHA256

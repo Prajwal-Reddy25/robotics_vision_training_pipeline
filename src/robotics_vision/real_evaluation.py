@@ -135,8 +135,10 @@ def native_confusions(
     return binary, shared
 
 
-def load_cases(manifest_path: Path) -> tuple[dict, list[dict]]:
-    validate_real_dataset(manifest_path)
+def load_cases(
+    manifest_path: Path, reference_manifest: str | Path | None = None
+) -> tuple[dict, list[dict]]:
+    validate_real_dataset(manifest_path, reference_manifest)
     manifest = json.loads(manifest_path.read_text())
     cases = []
     for record in manifest["records"]:
@@ -283,7 +285,11 @@ def continue_report(report: dict, source_hash: str, manifest_hash: str, expected
 
 
 def run_real_study(
-    source_path: str | Path, manifest_path: str | Path, output: str | Path, resume: bool = False
+    source_path: str | Path,
+    manifest_path: str | Path,
+    output: str | Path,
+    resume: bool = False,
+    reference_manifest: str | Path | None = None,
 ) -> dict:
     output = Path(output)
     output.mkdir(parents=True, exist_ok=resume)
@@ -291,7 +297,7 @@ def run_real_study(
     source = json.loads(source_path.read_text())
     if not source["complete"] or source["failed_runs"] or len(source["records"]) != 42:
         raise ValueError("Requires the complete frozen v1.1 study")
-    _, cases = load_cases(manifest_path)
+    _, cases = load_cases(manifest_path, reference_manifest)
     torch.set_num_threads(1)
     report = {
         "format_version": 1,

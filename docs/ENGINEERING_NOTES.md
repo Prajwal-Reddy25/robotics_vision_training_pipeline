@@ -288,3 +288,18 @@ or a neutral seed contribute to the engineering claim?
 - [ ] Contrast drop-gap versus score-score correlations and explain the common-ID confound.
 - [ ] Read a failure panel and distinguish false floor, missed floor, void and unsupported predictions.
 - [ ] Explain which data-selection, attribution, CUDA and hardware limitations remain.
+
+### Frozen input identity on fresh downloads
+
+A release-reproduction review identified that locally recorded hashes alone accept
+self-consistent changed downloads. Preparation/evaluation/review scripts now compare
+image/mask hashes, source annotation records, selection and semantic categories with
+the tracked original manifest. Renaming the data root is permitted; silently changing
+the final test contents is not. The offline test replaces an image and updates its
+local hash: ordinary integrity succeeds, frozen-reference identity correctly fails.
+The original80-image manifest passes this new gate unchanged; measured metrics are
+not recomputed or altered by this validation-only change. Captured Pillow versions
+matter because a lossless mask can serialize to different PNG bytes across versions.
+The native boundary band uses a radius3 square (Chebyshev) dilation of valid
+floor/nonfloor adjacency edges, excluding void pixels; it is not a calibrated
+physical boundary-distance measure.

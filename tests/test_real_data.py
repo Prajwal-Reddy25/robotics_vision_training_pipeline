@@ -157,3 +157,17 @@ def test_range_reader_rejects_http_and_range_ignoring_server(monkeypatch):
     monkeypatch.setattr(module.urllib.request, "urlopen", lambda *a, **kw: response)
     with pytest.raises(ValueError, match="byte ranges"):
         RangeReader("https://example.test/a")
+
+
+def test_frozen_reference_rejects_self_consistent_changed_download(tmp_path):
+    path, manifest = fixture_manifest(tmp_path)
+    reference = tmp_path / "frozen_manifest.json"
+    reference.write_text(json.dumps(manifest))
+    assert validate_real_dataset(path, reference)["samples"] == 1
+    # A new, valid image plus an updated local checksum must not redefine frozen data.
+    Image.new("RGB", (24, 16), (120, 80, 40)).save(tmp_path / "image.png")
+    manifest["records"][0]["image_sha256"] = _sha256(tmp_path / "image.png")
+    path.write_text(json.dumps(manifest))
+    assert validate_real_dataset(path)["samples"] == 1
+    with pytest.raises(ValueError, match="frozen reference"):
+        validate_real_dataset(path, reference)

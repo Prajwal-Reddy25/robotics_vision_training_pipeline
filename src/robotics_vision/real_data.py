@@ -207,7 +207,9 @@ def prepare_real_dataset(root: str | Path) -> Path:
     return manifest_path
 
 
-def validate_real_dataset(manifest_path: str | Path) -> dict[str, Any]:
+def validate_real_dataset(
+    manifest_path: str | Path, reference_manifest: str | Path | None = None
+) -> dict[str, Any]:
     manifest_path = Path(manifest_path)
     root = manifest_path.parent.resolve()
     manifest = json.loads(manifest_path.read_text())
@@ -215,6 +217,28 @@ def validate_real_dataset(manifest_path: str | Path) -> dict[str, Any]:
         raise ValueError("Invalid external evaluation manifest")
     if manifest.get("annotation_sha256") != ANNOTATION_SHA256:
         raise ValueError("Unrecognized annotation source")
+    if reference_manifest is not None:
+        reference = json.loads(Path(reference_manifest).read_text())
+        fields = (
+            "image",
+            "annotation",
+            "stratum",
+            "image_sha256",
+            "category_sha256",
+            "source_panoptic_sha256",
+        )
+
+        def identities(value):
+            return [
+                {field: record.get(field) for field in fields}
+                for record in sorted(value["records"], key=lambda r: r["image"]["id"])
+            ]
+
+        if identities(manifest) != identities(reference) or any(
+            manifest.get(field) != reference.get(field)
+            for field in ("annotation_sha256", "categories", "selection_ledger")
+        ):
+            raise ValueError("External dataset differs from the frozen reference")
     seen_ids, seen_hashes, seen_paths = set(), set(), set()
     pixels, valid, storage = 0, 0, 0
     for record in manifest["records"]:

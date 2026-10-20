@@ -1,13 +1,13 @@
 # Roadmap
 
-## v1.1.0 candidate — implemented and measured
+## v1.1.0 — released synthetic study
 
 Controlled synthetic domain shifts; reproducible augmentation ablations across
 existing models and three training seeds; per-class robustness, performance and
 failure evidence; engineering explanations and owner competency checklists.
 See [release readiness](docs/RELEASE_READINESS_V1_1.md) for actual gates and limits.
 
-## v1.2.0 candidate — real-photo evaluation implemented and measured
+## v1.2.0 — released real-photo evaluation
 
 All 42 frozen models, 80 licensed COCO real photographs, 84 native-ground-truth
 real dataset evaluations, all arms/seeds retained. Primary floor and restricted
@@ -15,6 +15,13 @@ cabinet/storage metrics reveal large transfer gaps and a reversal of mean synthe
 augmentation signs. No real-data tuning or additional architecture. See
 [real-data scope](docs/REAL_DATA_GENERALIZATION_V1_2.md) and
 [release readiness](docs/RELEASE_READINESS_V1_2.md).
+
+## Proposed v1.2.1 — release-maintenance tooling
+
+The maintenance branch prepares offline evidence verification, CI gates, portable
+CPU constraints, documentation consistency and clearer release presentation.
+No experiment, model, dataset or measured result changes. Package version and tag
+remain 1.2.0 during review. See [maintenance review](docs/MAINTENANCE_REVIEW_2026_10_20.md).
 
 ## Proposed v1.3.0 — representative warehouse adaptation experiment
 

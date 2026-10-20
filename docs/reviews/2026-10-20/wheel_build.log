@@ -1,0 +1,10 @@
+WARNING: The directory '/home/ironman/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: robotics-vision-training-pipeline
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): started
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): finished with status 'done'
+  Created wheel for robotics-vision-training-pipeline: filename=robotics_vision_training_pipeline-1.2.0-py3-none-any.whl size=56475 sha256=65841f5fcd230b276600debd2d5e30157afd434a44a48e6a499c347abfe7b013
+  Stored in directory: /tmp/pip-ephem-wheel-cache-640343jx/wheels/e6/31/c8/1a5f0617ef7259a0d0ac77a03e466df3b03a08aec0a39e99a0
+Successfully built robotics-vision-training-pipeline

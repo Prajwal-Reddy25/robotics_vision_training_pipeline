@@ -1,0 +1,298 @@
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running sdist
+running egg_info
+writing src/robotics_vision_training_pipeline.egg-info/PKG-INFO
+writing dependency_links to src/robotics_vision_training_pipeline.egg-info/dependency_links.txt
+writing entry points to src/robotics_vision_training_pipeline.egg-info/entry_points.txt
+writing requirements to src/robotics_vision_training_pipeline.egg-info/requires.txt
+writing top-level names to src/robotics_vision_training_pipeline.egg-info/top_level.txt
+reading manifest file 'src/robotics_vision_training_pipeline.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+no previously-included directories found matching 'data'
+no previously-included directories found matching 'runs'
+no previously-included directories found matching 'artifacts'
+adding license file 'LICENSE'
+writing manifest file 'src/robotics_vision_training_pipeline.egg-info/SOURCES.txt'
+running check
+creating robotics_vision_training_pipeline-1.2.0
+creating robotics_vision_training_pipeline-1.2.0/configs
+creating robotics_vision_training_pipeline-1.2.0/constraints
+creating robotics_vision_training_pipeline-1.2.0/docs
+creating robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+creating robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+creating robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+creating robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+creating robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+creating robotics_vision_training_pipeline-1.2.0/scripts
+creating robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+creating robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+creating robotics_vision_training_pipeline-1.2.0/tests
+copying files to robotics_vision_training_pipeline-1.2.0...
+copying CHANGELOG.md -> robotics_vision_training_pipeline-1.2.0
+copying LICENSE -> robotics_vision_training_pipeline-1.2.0
+copying MANIFEST.in -> robotics_vision_training_pipeline-1.2.0
+copying README.md -> robotics_vision_training_pipeline-1.2.0
+copying ROADMAP.md -> robotics_vision_training_pipeline-1.2.0
+copying pyproject.toml -> robotics_vision_training_pipeline-1.2.0
+copying configs/ablation_smoke.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying configs/ablation_v1_1.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying configs/domain_shift.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying configs/lite_fcn.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying configs/smoke.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying configs/tiny_unet.yaml -> robotics_vision_training_pipeline-1.2.0/configs
+copying constraints/v1_2_cpu.txt -> robotics_vision_training_pipeline-1.2.0/constraints
+copying docs/ATTRIBUTION_REVIEW.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/AUDIT_REPORT.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/AUDIT_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/AUDIT_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/AUGMENTATION_ABLATION_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/BENCHMARKS_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/BENCHMARKS_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/DATASET_CARD.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/DEPLOYMENT.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/DOMAIN_SHIFT_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/ENGINEERING_NOTES.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/FAILURE_ANALYSIS_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/GITHUB_RELEASE_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/GPU_VALIDATION.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/LIMITATIONS.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/MAINTENANCE_REVIEW_2026_10_20.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/MODEL_CARD.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/PLAN_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/PLAN_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/PORTFOLIO_REVIEW.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/REAL_DATA_GENERALIZATION_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/RELEASE_NOTES_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/RELEASE_NOTES_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/RELEASE_READINESS_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/RELEASE_READINESS_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/REPRODUCIBILITY.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/SIM_TO_REAL_ANALYSIS_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/SIM_TO_REAL_TABLES_V1_2.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/TRAINING.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/VALIDATION_V1_1.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/VERIFICATION.md -> robotics_vision_training_pipeline-1.2.0/docs
+copying docs/evidence/v1_1/SHA256.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/build.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/ci_smoke.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/ci_smoke.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/cpu_tests.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/deployment.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/deployment.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu_collection.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu_initial_failure.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu_initial_failure.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu_initial_partial.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/gpu_tests.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/hygiene_review.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/lint.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/requirements-cpu.txt -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/requirements-gpu.txt -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/review.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/study.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/study.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/tensorrt_probe.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_1/tensorrt_probe.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_1
+copying docs/evidence/v1_2/SHA256.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/analysis.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/cpu_versions.txt -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/cuda_versions.txt -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/deployment.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/engineering_validation.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/gpu.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/input_tags.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/manifest.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/operational_failures.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/provenance.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/real_runs.csv -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/reproducibility.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/study.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2
+copying docs/evidence/v1_2/gallery/206218.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/256916.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/287347.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/333772.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/343466.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/383842.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/458410.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/464358.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/498919.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/554291.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/68765.png -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/ATTRIBUTION.md -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/credits.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/gallery/selection.json -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/gallery
+copying docs/evidence/v1_2/logs/baseline_review.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/cpu_tests.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/cuda_tests.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/data_identity.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/dependencies.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/deployment.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/gallery.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/gallery_attributed.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/gallery_release.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/gpu.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/lint.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/packaging.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/real.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/repro.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/evidence/v1_2/logs/review.log -> robotics_vision_training_pipeline-1.2.0/docs/evidence/v1_2/logs
+copying docs/reviews/2026-10-20/cpu_tests.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/dependencies.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/documentation.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/github_status.json -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/offline_evidence.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/packaging.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/photo_links.json -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/ruff.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/validation.json -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying docs/reviews/2026-10-20/wheel_build.log -> robotics_vision_training_pipeline-1.2.0/docs/reviews/2026-10-20
+copying scripts/check_docs.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/document_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/document_v1_1.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/evaluate_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/gallery_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/prepare_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/review_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/review_v1_1.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/validate_real_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/validate_v1_1.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying scripts/verify_published_v1_2.py -> robotics_vision_training_pipeline-1.2.0/scripts
+copying src/robotics_vision/__init__.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/benchmarking.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/cli.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/comparison.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/config.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/data.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/domain.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/engine.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/evaluation.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/exporting.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/metrics.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/models.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/real_analysis.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/real_data.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/real_evaluation.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/reproducibility.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/runlog.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/shifts.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/study.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision/training.py -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision
+copying src/robotics_vision_training_pipeline.egg-info/PKG-INFO -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying src/robotics_vision_training_pipeline.egg-info/SOURCES.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying src/robotics_vision_training_pipeline.egg-info/dependency_links.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying src/robotics_vision_training_pipeline.egg-info/entry_points.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying src/robotics_vision_training_pipeline.egg-info/requires.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying src/robotics_vision_training_pipeline.egg-info/top_level.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+copying tests/test_comparison.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_config.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_data.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_docs.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_metrics.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_models.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_published_evidence.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_real_analysis.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_real_data.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_real_evaluation.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_shifts.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_study.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying tests/test_training.py -> robotics_vision_training_pipeline-1.2.0/tests
+copying src/robotics_vision_training_pipeline.egg-info/SOURCES.txt -> robotics_vision_training_pipeline-1.2.0/src/robotics_vision_training_pipeline.egg-info
+Writing robotics_vision_training_pipeline-1.2.0/setup.cfg
+Creating tar archive
+removing 'robotics_vision_training_pipeline-1.2.0' (and everything under it)
+{
+  "dataset_evaluations": 84,
+  "descriptive_correlations": 48,
+  "frozen_models": 42,
+  "gallery_panels": 11,
+  "inventory_files_verified": {
+    "v1_1": 21,
+    "v1_2": 42
+  },
+  "native_image_records": 6720,
+  "not_verified": [
+    "original image/mask/checkpoint bytes",
+    "measurement authenticity",
+    "hardware latency",
+    "current external links/licenses"
+  ],
+  "paired_contrasts": 24,
+  "scope": "Recorded arithmetic, cross-artifact consistency and hashes only; no inference.",
+  "seed_summary_groups": 28,
+  "status": "passed",
+  "unresolved_creator_ids": [
+    287347,
+    464358
+  ]
+}
+Checked 35 Markdown files and 136 local links; 0 failures
+{
+  "dataset_evaluations": 84,
+  "descriptive_correlations": 48,
+  "frozen_models": 42,
+  "gallery_panels": 11,
+  "inventory_files_verified": {
+    "v1_1": 21,
+    "v1_2": 42
+  },
+  "native_image_records": 6720,
+  "not_verified": [
+    "original image/mask/checkpoint bytes",
+    "measurement authenticity",
+    "hardware latency",
+    "current external links/licenses"
+  ],
+  "paired_contrasts": 24,
+  "scope": "Recorded arithmetic, cross-artifact consistency and hashes only; no inference.",
+  "seed_summary_groups": 28,
+  "status": "passed",
+  "unresolved_creator_ids": [
+    287347,
+    464358
+  ]
+}
+WARNING: The directory '/home/ironman/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Processing ./runs/release_review_20261020/sdist_extract/robotics_vision_training_pipeline-1.2.0
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: robotics-vision-training-pipeline
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): started
+  Building wheel for robotics-vision-training-pipeline (pyproject.toml): finished with status 'done'
+  Created wheel for robotics-vision-training-pipeline: filename=robotics_vision_training_pipeline-1.2.0-py3-none-any.whl size=56475 sha256=2a5982e9fc13df5febf474d1b778179a190c0d83bfe34478f87a762829720af7
+  Stored in directory: /tmp/pip-ephem-wheel-cache-6a8in8v7/wheels/5d/70/ec/36e4859ae822aa568204915c5dbff51ecd5f9a951450c3fb98
+Successfully built robotics-vision-training-pipeline
+WARNING: The directory '/home/ironman/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Processing ./runs/release_review_20261020/sdist_wheel/robotics_vision_training_pipeline-1.2.0-py3-none-any.whl
+Installing collected packages: robotics-vision-training-pipeline
+Successfully installed robotics-vision-training-pipeline-1.2.0
+/home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/runs/release_review_20261020/wheel_import/robotics_vision/__init__.py
+{
+  "checked_on": "2026-10-20",
+  "sdist_bytes": 2829791,
+  "wheel_bytes": 56475,
+  "sdist_sha256": "30335d8ea42e482e10a18179d0322bd77e65c98ed149d9f551e8a20c8edd7e52",
+  "wheel_sha256": "2a5982e9fc13df5febf474d1b778179a190c0d83bfe34478f87a762829720af7",
+  "version": "1.2.0",
+  "wheel_from_sdist": true,
+  "isolated_wheel_import": true,
+  "sdist_context_verified": true,
+  "sdist_offline_verification": true,
+  "tagged_archive_offline_verification": true,
+  "constraints_compared": 32,
+  "constraint_mismatches": {},
+  "runtime_source_changed": false
+}

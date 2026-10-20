@@ -1,0 +1,18 @@
+{
+  "checked_on": "2026-10-20",
+  "checkpoint_and_original_photo_files": "Not loaded, retrained or modified; not authenticated by this Git comparison.",
+  "protected_paths": [
+    "docs/evidence/",
+    "src/robotics_vision/",
+    "configs/",
+    "docs/AUDIT_REPORT.md",
+    "docs/AUDIT_V1_1.md",
+    "docs/AUDIT_V1_2.md",
+    "docs/PLAN_V1_1.md",
+    "docs/PLAN_V1_2.md"
+  ],
+  "reference_commit": "856e0574098a38dfaa1374cde1fcc3e0c923397b",
+  "reference_tag_object": "561c77a374d1505a3ec8528da55a6093ded9f4d4",
+  "tracked_files_compared": 96,
+  "unchanged": true
+}

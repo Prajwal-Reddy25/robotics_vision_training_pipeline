@@ -85,8 +85,10 @@ def main():
 Measured 2026-10-05/06. This is a **partial-ontology real-photo evaluation** of
 all 42 frozen v1.1 checkpoints, not a full four-class warehouse deployment claim.
 The [predeclared plan](PLAN_V1_2.md) predates predictions; the [audit](AUDIT_V1_2.md)
-identifies exact baseline `d9a74a0bebc48b0facd049f24cb2889bf3bbda4e` despite the
-missing local v1.1 tag. No architecture or training configuration was added/tuned.
+identifies exact baseline `d9a74a0bebc48b0facd049f24cb2889bf3bbda4e`. The v1.1 tag
+was unavailable during collection; it now points to that same commit. No architecture
+or training configuration was added/tuned. Publication and later validation are
+tracked in the [dated maintenance review](MAINTENANCE_REVIEW_2026_10_20.md).
 
 ## Dataset and label contract
 

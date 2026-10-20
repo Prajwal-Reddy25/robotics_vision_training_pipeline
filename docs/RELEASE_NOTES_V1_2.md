@@ -1,7 +1,7 @@
 # v1.2.0 — real-data generalization and sim-to-real evaluation
 
 The v1.1 synthetic augmentation gains could not establish real-camera generalization.
-v1.2 freezes the existing42 models and evaluates them on80 independently sourced
+v1.2 freezes the existing 42 models and evaluates them on 80 independently sourced
 COCO real photographs with native panoptic ground truth. It adds explicit floor and
 restricted storage-obstacle mappings, hash/licensing/geometry checks, paired
 three-seed analyses, failure visualizations and reproducible evidence. No additional
@@ -32,13 +32,17 @@ metrics, seed deltas, sizes and correlation results are retained.
 
 ## Validation and limitations
 
-CPU 76 passed with one CUDA skip; CUDA 77 passed. Ruff and dependency checks pass;
+Original 2026-10-06 validation: CPU 76 passed with one CUDA skip; CUDA 77 passed.
+Ruff and dependency checks passed;
 wheel build/import, frozen source/data reviews, exact CPU repeat/resume, two repeated
-real-metric evaluations and real-input TS/ORT parity at 64²/128² pass. Fresh GPU
-FP32/AMP smoke/resume and synchronized eager/TS benchmarks pass. The prior v1.1
+real-metric evaluations and real-input TS/ORT parity at 64²/128² passed. The original
+GPU FP32/AMP smoke/resume and synchronized eager/TS benchmarks also passed. The prior v1.1
 LiteFCN CUDA bitwise-resume failure remains documented; no strict general CUDA
 determinism guarantee is added. TensorRT and physical-camera/robot validation
-remain unavailable. Hosted GitHub Actions was not executed from this local branch.
+remain unvalidated. At the original local review, hosted GitHub Actions had not run.
+The subsequently published [v1.2.0 tag CI](https://github.com/Prajwal-Reddy25/robotics_vision_training_pipeline/actions/runs/39390109521)
+passed on 2026-10-20. New maintenance checks are recorded separately in the
+[dated review](MAINTENANCE_REVIEW_2026_10_20.md).
 
 COCO interiors are floor/cabinet-enriched, not representative warehouses. Cones
 and mobile robots lack compatible labels; cabinet metrics evaluate a restricted
@@ -52,9 +56,12 @@ scene/session-grouped tuning and final-test splits, scene-level uncertainty and
 controlled adaptation/mechanism experiments. Keep this external final test out of
 tuning. CUDA determinism/export migration remain separate engineering work.
 
-Recommend **v1.2.0 for this documented partial-ontology evaluation scope**. No tag
-or publication is created automatically. See [release gate](RELEASE_READINESS_V1_2.md)
-and [full measured report](REAL_DATA_GENERALIZATION_V1_2.md).
+Published as **v1.2.0 for this documented partial-ontology evaluation scope**.
+The tag was created on 2026-10-06 at `856e057`; the GitHub Release was published on
+2026-10-20. This maintenance review changes neither the tag nor the published body.
+[Prepared GitHub Release copy](GITHUB_RELEASE_V1_2.md) is available for manual review.
+See [historical release gate](RELEASE_READINESS_V1_2.md) and
+[full measured report](REAL_DATA_GENERALIZATION_V1_2.md).
 
 ## Owner competency checklist
 

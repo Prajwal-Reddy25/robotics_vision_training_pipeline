@@ -1,0 +1,16 @@
+{
+  "checked_on": "2026-10-20",
+  "constraint_mismatches": {},
+  "constraints_compared": 32,
+  "isolated_wheel_import": true,
+  "runtime_source_changed": false,
+  "sdist_bytes": 2829791,
+  "sdist_context_verified": true,
+  "sdist_offline_verification": true,
+  "sdist_sha256": "30335d8ea42e482e10a18179d0322bd77e65c98ed149d9f551e8a20c8edd7e52",
+  "tagged_archive_offline_verification": true,
+  "version": "1.2.0",
+  "wheel_bytes": 56475,
+  "wheel_from_sdist": true,
+  "wheel_sha256": "2a5982e9fc13df5febf474d1b778179a190c0d83bfe34478f87a762829720af7"
+}

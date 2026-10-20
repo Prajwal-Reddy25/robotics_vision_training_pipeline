@@ -1,5 +1,12 @@
 # v1.1.0 release-readiness review
 
+**Publication context, 2026-10-20:** v1.1.0 now tags `d9a74a0`; v1.0.0 tags
+`54f3a2a`. The original 2026-10-04 readiness observations below retain their
+prepublication context. See the [current maintenance review](MAINTENANCE_REVIEW_2026_10_20.md)
+for publication facts and later checks. Historical missing-tag observations are
+not current release-status claims.
+
+
 Review date: 2026-10-04. Recommendation: **v1.1.0**, with the evidence boundaries
 below. Development branch: `feature/v1.1.0`. No tag or remote publication created.
 The owner-approved provisional stable baseline is `54f3a2a`; the claimed historical

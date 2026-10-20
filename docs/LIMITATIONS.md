@@ -6,7 +6,7 @@
 | Tested | CPU unit/integration suite, deterministic transformations, label geometry, legacy resume, nonfinite failures, atomic ledger interruption, exact CPU repeat/resume, dynamic exports, local CPU CI-equivalent smoke. |
 | Experimentally demonstrated | 42 measured synthetic-data CPU training runs, 546 measured synthetic-condition evaluations, retained negative augmentation results, class IoU/degradation/seed SD, measured CPU/GPU latency/size, fresh CUDA/AMP finite execution. |
 | Simulated/procedural | Warehouse images, lighting/texture/blur/noise stressors, planar homography viewpoint, visible foreground-rectangle occlusion. No robotics physics engine was used or needed for this raster-data project. |
-| Not validated | Full four-class warehouse/physical camera/robot generalization, calibrated 3D viewpoint, physical sensor noise/motion blur, safety-critical navigation, long-horizon AMP convergence, TensorRT execution, remote GitHub Actions run for this branch. |
+| Not validated | Full four-class warehouse/physical camera/robot generalization, calibrated 3D viewpoint, physical sensor noise/motion blur, safety-critical navigation, long-horizon AMP convergence, TensorRT execution, hosted execution of the new maintenance branch. |
 
 The dataset has only 180 scenes and 27 test images, with fixed semantic colors.
 Training-seed SD (n=3) measures optimization variability within one fixed split;
@@ -46,7 +46,7 @@ The new study records/verifies manifest and transformed-content hashes, but does
 not retrofit data-identity guarantees into historical checkpoints.
 
 At the original audit the requested historical v1.0.0 tag was absent; `54f3a2a` is explicitly the
-owner-approved provisional baseline. No tag, hardware observation, successful
+owner-approved provisional baseline at that audit. No tag, hardware observation, successful
 score or failure attribution has been manufactured to fill missing evidence.
 
 ## Owner competency checklist
@@ -64,11 +64,11 @@ images and42 frozen models are included; all 84 size/model evaluations completed
 This changes the prior absence of real-data evidence, but does not validate cones,
 mobile robots, representative warehouses, calibrated sensors or physical robot use.
 
-Floor/cabinet/licensing selection creates sampling bias. Only20.50% of valid pixels
+Floor/cabinet/licensing selection creates sampling bias. Only 20.50% of valid pixels
 are scored in the restricted endpoint; surrounding false predictions can be ignored
 there, so primary binary metrics are essential. Pixel pooling weights scene sizes;
 three optimization seeds do not quantify scene uncertainty. Correlations share an
-ID term and non-independent arms. The128² sensitivity gap retains64² ID metrics,
+ID term and non-independent arms. The 128² sensitivity gap retains 64² ID metrics,
 so it mixes input resolution and domain changes. Future tuning on these 80 test
 images would retire their independent-test status.
 
@@ -85,10 +85,15 @@ The worker continued across a server restart; continuation refused the already
 completed ledger. Frozen original checkpoint binaries remain local/ignored; rebuilding
 needs the documented environment/configurations. Only two full CPU configurations
 were independently retrained for this release, not all 42. CUDA bitwise-resume limits
-remain despite four passing fresh probes. No TensorRT or hosted CI execution was added.
+remain despite four passing fresh probes. No TensorRT execution was added. Hosted CI
+had not run at the original review; the published-tag CPU workflow subsequently
+[passed on 2026-10-20](https://github.com/Prajwal-Reddy25/robotics_vision_training_pipeline/actions/runs/39390109521).
 
-Current tag inventory: v1.0.0 points to 54f3a2a; no local v1.1.0 tag exists. Exact
-frozen v1.1 commit d9a74a0 is recorded rather than inventing historical release evidence.
+Tag inventory checked 2026-10-20: v1.0.0 points to `54f3a2a`, v1.1.0 to `d9a74a0`,
+and v1.2.0 to `856e057`. Earlier missing-tag observations are retained in dated audits.
+The maintenance offline verifier checks recorded arithmetic/integrity, not original
+pixels, checkpoint bytes, measurement authenticity or physical deployment. Its new
+hosted CI gate has not been published or run from this branch.
 
 - [ ] Explain partial ontology, selection bias, metric projection and absence of scene confidence intervals.
 - [ ] Describe how to create a new leakage-safe final test before warehouse adaptation.

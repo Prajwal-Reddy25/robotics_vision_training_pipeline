@@ -316,3 +316,53 @@ has the larger shared-mask gap in both baseline models; broad binary floor failu
 remains severe separately. Source: `real_analysis.observed_values` and the class table
 in `SIM_TO_REAL_ANALYSIS_V1_2.md`. Explain why ignoring other categories changes
 a floor union even when all predictions stay identical.
+
+## Published-evidence review tooling (maintenance, 2026-10-20)
+
+**Problem:** the original real-data reviewer requires local images and checkpoints;
+a source-archive reviewer should still be able to check recorded claims offline.
+**Principle:** integer confusion counts determine IoU/precision/recall and pixel
+accuracy; paired seed deltas must precede mean/sample SD. Class projection preserves
+unsupported prediction errors. Correlation is computed from average ranks, retaining
+ties and negative associations. Original serialization hashes can be reconstructed
+from lossless compact JSON; hashes detect change relative to an inventory, not
+measurement truth or a maintainer rewriting that inventory.
+
+**Implementation:** `scripts/verify_published_v1_2.py` uses standard-library sums,
+statistics, CSV and SHA256 only. It verifies complete identities, annotation-derived
+supports, cross-endpoint floor counts, projections, summaries, paired deltas,
+correlations, CSV/gallery consistency and inventories. Explicit exceptions remain
+active under `python -O`. File/count/byte limits bound its fixed v1.2 scope.
+`check_docs.py` checks local links/heading anchors without network requests.
+
+**Decisions/alternatives:** a separate dependency-free CI job keeps the evidence
+check usable even when ML dependency installation is unavailable. Importing the
+production PyTorch/NumPy evaluator would require unnecessary packages and would
+reuse the implementation being checked. Generic dataset/model verification is
+outside this version-specific recorded-evidence checker; native reproduction still
+uses the original tools and frozen data identity gate.
+
+**Assumptions/failures:** a trusted published tag supplies the reference snapshot.
+Correct arithmetic can still describe fabricated measurements; no original image,
+checkpoint bytes, inference, physical hardware or current license is authenticated.
+The fixed schema intentionally rejects missing/extra run identities. External URL
+checks are dated observations, not a new CI network dependency.
+
+**Validation:** tests use known fractions/ranks and modified copies of the real
+artifacts. Corrupted metrics, missing runs, sign/statistic changes and CSV/creator
+inconsistencies fail after inventory hashes are refreshed. An optimized interpreter
+still rejects corrupted evidence. The script runs from an unrelated working directory
+with site packages disabled; source-archive validation is recorded in the maintenance
+review. Frozen evidence is never rewritten by this tool.
+
+**Interview questions:** Why is a matching SHA insufficient to prove measurement
+authenticity? Why recompute from per-image counts? What does independent arithmetic
+add? Why do shared masks matter for class-gap ranking? How do checks differ from
+inference reproduction? Which missing artifacts prevent stronger verification?
+
+## Owner competency checklist — publication maintenance
+
+- [ ] Run the standard-library checker against an extracted v1.2 source archive.
+- [ ] Explain a rehashed-corruption rejection and an authenticity claim it cannot support.
+- [ ] Locate original versus newly executed validation and the two unresolved creators.
+- [ ] Explain constraints versus a complete environment lock and preserve frozen evidence.

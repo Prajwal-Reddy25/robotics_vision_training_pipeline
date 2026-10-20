@@ -1,0 +1,29 @@
+........................................................................ [ 78%]
+...................s                                                     [100%]
+=============================== warnings summary ===============================
+tests/test_models.py::test_models_preserve_spatial_shape_and_script[tiny_unet]
+tests/test_models.py::test_models_preserve_spatial_shape_and_script[lite_fcn]
+tests/test_training.py::test_exact_resume_evaluate_export_and_benchmark
+  /home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/test_training.py::test_exact_resume_evaluate_export_and_benchmark
+  /home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:89: FutureWarning: `torch.jit.save` is deprecated. Please switch to `torch.export`.
+    warnings.warn(
+
+tests/test_training.py::test_exact_resume_evaluate_export_and_benchmark
+  /home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/src/robotics_vision/exporting.py:132: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+    torch.onnx.export(model, example, onnx_path, **export_options)
+
+tests/test_training.py::test_exact_resume_evaluate_export_and_benchmark
+  /home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_compat.py:112: DeprecationWarning: from_dynamic_axes_to_dynamic_shapes is deprecated and will be removed in a future release. This function converts 'dynamic_axes' format (including custom axis names) to 'dynamic_shapes' format. Instead of relying on this conversion, provide 'dynamic_shapes' directly with custom names.
+    _dynamic_shapes.from_dynamic_axes_to_dynamic_shapes(
+
+tests/test_training.py::test_exact_resume_evaluate_export_and_benchmark
+  /home/ironman/robotics-agent-workspace/robotics_vision_training_pipeline/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_training.py:114: CUDA is required
+91 passed, 1 skipped, 7 warnings in 8.04s

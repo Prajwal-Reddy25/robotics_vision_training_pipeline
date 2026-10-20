@@ -1,6 +1,19 @@
 # Changelog
 
-## 1.2.0 — release candidate, 2026-10-06
+## Unreleased — maintenance review, 2026-10-20
+
+- Refresh release status, README results/gallery, reproduction guidance and prepared
+  GitHub Release copy; preserve original experiment dates and historical audits.
+- Add a standard-library offline verifier of frozen v1.2 arithmetic, hashes,
+  seed statistics, CSV and attribution consistency, with corruption tests and CI.
+- Add local documentation-link validation and portable historical CPU constraints.
+- Include the required configuration/script/documentation/evidence context in Python
+  source distributions, while excluding raw data, generated runs and checkpoints.
+- Keep package version 1.2.0 and the existing v1.2.0 tag unchanged. These maintenance
+  additions are not present in that original tag. A v1.2.1 tooling patch is proposed,
+  subject to maintainer approval; no datasets, results or checkpoint files change.
+
+## 1.2.0 — 2026-10-06 (GitHub Release published 2026-10-20)
 
 - Added official real COCO panoptic subset preparation, license/hash/area/geometry checks,
   native-resolution evaluation, explicit binary floor and restricted storage label mappings.
@@ -13,13 +26,15 @@
 - Verified native real metrics from two independently repeated CPU configurations;
   real-input TorchScript/ORT parity, CPU/CUDA suites, fresh FP32/AMP/resume/benchmarks
   and wheel packaging. Added technical notes, owner checklists and bounded evidence.
-- No new architecture/runtime dependency, real-data tuning, tag or publication.
+- No new architecture/runtime dependency or real-data tuning. The original work
+  stopped before publication; the owner subsequently tagged and published it.
 
 The scope is partial-ontology real-photo evaluation, not full warehouse deployment.
-Local baseline is exact commit `d9a74a0`; the v1.1 tag is absent. The v1.0 tag now
-points to `54f3a2a`; earlier absence records below describe historical checkout state.
+The released tag is `v1.2.0` at `856e057`; baseline tag `v1.1.0` points to `d9a74a0`.
+Tag `v1.0.0` points to `54f3a2a`. Experiment dates above are preserved; publication
+was later. Earlier absence records below describe their historical checkout state.
 
-## 1.1.0 — release candidate, 2026-10-04
+## 1.1.0 — 2026-10-04 (subsequently tagged v1.1.0)
 
 - Added deterministic paired lighting/texture/blur/noise/viewpoint-proxy/occlusion
   evaluations at two fixed severities, retaining class support, confusion matrices,
@@ -37,13 +52,13 @@ points to `54f3a2a`; earlier absence records below describe historical checkout 
 - Expanded tests/CPU CI and documented technical principles, owner competencies,
   measured evidence, versions, limits, release review and next work.
 
-No release tag or remote publication was created. Package version is aligned to
-1.1.0 for the candidate.
+At the 2026-10-04 review, no release tag or remote publication had been created;
+package version was aligned to 1.1.0. The tag now identifies `d9a74a0`.
 
 ## Provisional stable baseline — `54f3a2a`
 
-The owner requested continuation from a released/tagged v1.0.0. This checkout has
-no tags or remotes and its original package version was 0.1.0. The owner approved
+Historical checkout observation: the owner requested continuation from a released/
+tagged v1.0.0, but that checkout had no tags or remotes and package version 0.1.0. The owner approved
 HEAD as the provisional baseline. This record does not assert that any of the
 three existing commits is the missing release tag.
 

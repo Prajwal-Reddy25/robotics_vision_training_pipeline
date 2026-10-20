@@ -5,6 +5,19 @@ on:
   pull_request:
 
 jobs:
+  published-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify recorded v1.2 evidence without ML packages or datasets
+        run: python -I -S scripts/verify_published_v1_2.py
+      - name: Validate local documentation links
+        run: python -I -S scripts/check_docs.py
+
   test-and-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 25

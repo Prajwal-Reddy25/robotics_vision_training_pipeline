@@ -1,5 +1,16 @@
 # Release readiness v1.2
 
+**Publication update, 2026-10-20:** v1.2.0 is released at
+`856e0574098a38dfaa1374cde1fcc3e0c923397b`; v1.1.0 now tags `d9a74a0`.
+[Published-tag CI](https://github.com/Prajwal-Reddy25/robotics_vision_training_pipeline/actions/runs/39390109521)
+passed. See the [current maintenance review](MAINTENANCE_REVIEW_2026_10_20.md)
+for newly executed checks and the patch recommendation.
+
+## Historical prepublication review — 2026-10-06
+
+The following readiness observations retain their original collection context.
+Missing-tag and unpublished-CI statements describe that historical checkout.
+
 Recommend **v1.2.0 for partial-ontology real-photo evaluation and qualified sim-to-real
 analysis**. The evidence demonstrates poor transfer and mixed augmentation effects;
 it does not establish robust four-class warehouse perception. No tag or publication

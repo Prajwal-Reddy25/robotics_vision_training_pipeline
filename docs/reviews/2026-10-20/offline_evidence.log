@@ -1,0 +1,25 @@
+{
+  "dataset_evaluations": 84,
+  "descriptive_correlations": 48,
+  "frozen_models": 42,
+  "gallery_panels": 11,
+  "inventory_files_verified": {
+    "v1_1": 21,
+    "v1_2": 42
+  },
+  "native_image_records": 6720,
+  "not_verified": [
+    "original image/mask/checkpoint bytes",
+    "measurement authenticity",
+    "hardware latency",
+    "current external links/licenses"
+  ],
+  "paired_contrasts": 24,
+  "scope": "Recorded arithmetic, cross-artifact consistency and hashes only; no inference.",
+  "seed_summary_groups": 28,
+  "status": "passed",
+  "unresolved_creator_ids": [
+    287347,
+    464358
+  ]
+}

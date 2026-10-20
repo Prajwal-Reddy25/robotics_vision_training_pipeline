@@ -1,23 +1,87 @@
 # Robotics Vision Training Pipeline
 
-A portfolio-grade, end-to-end PyTorch semantic-segmentation project for warehouse robotics. It covers deterministic data generation, validation and leakage-safe splits; paired augmentation; configurable CPU/CUDA training; full-state checkpoint/resume; evaluation and error analysis; TorchScript/ONNX export; ONNX Runtime deployment; and measured accuracy/performance comparisons.
+Reproducible semantic-segmentation training, deployment and domain-shift analysis
+with two small PyTorch models: **TinyUNet** and **LiteFCN**. The project records where
+synthetic robustness fails to transfer to real photographs, including negative results.
 
-The default synthetic lifecycle is offline and downloads no dataset or pretrained model. v1.2 adds an explicit, optional download of licensed real evaluation photographs; it never downloads pretrained weights. The bundled generator creates small RGB warehouse scenes and four-class masks (`floor`, `obstacle`, `safety_cone`, `mobile_robot`) locally. Generated data, checkpoints, and deployment artifacts are Git-ignored.
+[v1.2.0 release](https://github.com/Prajwal-Reddy25/robotics_vision_training_pipeline/releases/tag/v1.2.0)
+· [Passing tag CI, checked 2026-10-20](https://github.com/Prajwal-Reddy25/robotics_vision_training_pipeline/actions/runs/39390109521)
+· [Reproducibility guide](docs/REPRODUCIBILITY.md)
 
-## v1.2: real-photo transfer, including failed generalization
+- **Data and experiments:** deterministic four-class warehouse scenes, hash-checked
+  splits, six controlled synthetic shifts, seven augmentation arms and three seeds.
+- **Training and deployment:** CPU/CUDA, mixed precision, full-state checkpoints/resume,
+  TorchScript/ONNX export, ONNX Runtime and measured model-call latency/size.
+- **Real-data evaluation:** 42 frozen models × 80 COCO photos × two input sizes;
+  native ground truth, explicit partial label mappings, per-class metrics and failure panels.
 
-All 42 frozen v1.1 models were evaluated on 80 independently sourced COCO photographs,
-with native public panoptic ground truth: 84 dataset evaluations at 64²/128², three
-training seeds, seven augmentation arms, no real-data tuning. The supported tasks
-are binary floor recognition and a restricted cabinet/storage-obstacle subset;
-cones/mobile robots and physical robot perception remain unvalidated.
+The synthetic lifecycle is offline. Real-photo preparation is an optional download;
+no pretrained weights are downloaded. TensorRT integration remains unvalidated.
 
-At 64², baseline real binary mIoU is **0.1913 ± 0.0365 TinyUNet / 0.2711 ± 0.0809
-LiteFCN**. Occlusion augmentation changes it **−0.0091 / +0.0089**, reversing the
-synthetic mean signs under the same binary metric projection, with mixed seed signs.
-Floor IoU remains only 0.1271/0.1314. Disabling baseline augmentation improves all
-three real-test seeds in both models. These are measured transfer failures and
-qualified contrasts, not a deployed robustness claim.
+## Key measured results
+
+Baseline recipes, mean ± sample SD across seeds 42/43/44; no real-data tuning:
+
+| Model | Synthetic ID mIoU, 4 classes | Synthetic shifted mIoU, 4 classes | Real mIoU, binary floor/nonfloor at 64² |
+| --- | --- | --- | --- |
+| TinyUNet | 0.6874 ± 0.1272 | 0.6528 ± 0.1136 | 0.1913 ± 0.0365 |
+| LiteFCN | 0.6070 ± 0.0166 | 0.5933 ± 0.0240 | 0.2711 ± 0.0809 |
+
+**The columns have different label spaces; do not subtract their mIoUs.** The
+[sim-to-real analysis](docs/SIM_TO_REAL_ANALYSIS_V1_2.md) uses matching binary
+projections for gaps and augmentation contrasts. Occlusion augmentation changes
+synthetic shifted binary mIoU by +0.0683/−0.0063 (TinyUNet/LiteFCN), versus
+−0.0091/+0.0089 on real data. Mean signs reverse, individual seed signs are mixed,
+and baseline real floor IoU remains only 0.1271/0.1314.
+
+v1.1 measured 42 training runs and 546 synthetic-condition evaluations. v1.2 reused
+those models for 84 real dataset evaluations plus two exact engineering repeats.
+It validates floor recognition and a restricted cabinet/storage-obstacle endpoint;
+cones, mobile robots and physical warehouse deployment remain unvalidated.
+
+## Prediction gallery
+
+Existing diagnostic figures, baseline/occlusion seed 42 at 64². Green = floor,
+red error pixels = false floor, blue = missed floor. Click for full-size panels.
+
+<a href="docs/evidence/v1_2/gallery/206218.png"><img src="docs/evidence/v1_2/gallery/206218.png" width="900" alt="Relatively best case, with substantial remaining false-floor errors"></a>
+
+**Relatively best, errors remain:** COCO 206218. Photo: [Mechatronics Guy](https://www.flickr.com/photos/_/7161410855/),
+[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/), resized into a diagnostic panel.
+
+<a href="docs/evidence/v1_2/gallery/554291.png"><img src="docs/evidence/v1_2/gallery/554291.png" width="900" alt="Blur and clutter failure with widespread false floor and missed floor"></a>
+
+**Blur/clutter failure:** COCO 554291. Photo: [Eirik Newth](https://www.flickr.com/photos/_/256248429/),
+[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/), resized into a diagnostic panel.
+Ground-truth annotations: COCO Consortium, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+[Full success/failure gallery](docs/FAILURE_ANALYSIS_V1_2.md) ·
+[Original attribution](docs/evidence/v1_2/gallery/ATTRIBUTION.md) ·
+[2026-10-20 link review and two unresolved creators](docs/ATTRIBUTION_REVIEW.md).
+
+## Check the published evidence offline
+
+Maintenance addition in this checkout; it is not part of the original v1.2.0 tag.
+Python 3.10+ and the tracked evidence are sufficient:
+
+```bash
+python -I -S scripts/verify_published_v1_2.py
+python -I -S scripts/check_docs.py
+```
+
+The verifier independently recomputes recorded metrics, all seed summaries/paired
+contrasts and correlations, checks CSV/gallery consistency and 63 inventoried files.
+It neither downloads data nor loads checkpoints. It checks recorded arithmetic and
+integrity; original-pixel validity, inference, hardware timing and measurement
+authenticity require additional evidence. See [scope and full reproduction](docs/REPRODUCIBILITY.md).
+
+## v1.2: real-photo transfer
+
+Released tag `v1.2.0` points to `856e0574098a38dfaa1374cde1fcc3e0c923397b`;
+package version is 1.2.0. Experiments were recorded on 2026-10-05/06; the tag was
+created on October 6 and the GitHub Release published on October 20. The frozen
+v1.1 baseline `d9a74a0` now has tag `v1.1.0`. Original dated audits are preserved.
+
+Full native-image inference needs the real data and 42 locally generated checkpoints:
 
 ```bash
 python scripts/prepare_real_v1_2.py
@@ -25,16 +89,15 @@ python scripts/evaluate_real_v1_2.py --output-dir runs/my_real_study
 python scripts/review_real_v1_2.py --study runs/my_real_study/study.json
 ```
 
-The evaluator requires the 42 locally generated v1.1 checkpoints. Use fresh output
-paths; see the real-data report for regeneration when those ignored files are absent.
-The original v1.1 commit `d9a74a0` is the frozen baseline; its local tag is absent.
-No new architecture/dependency or experimental training is added.
+Use fresh output paths. [Regeneration instructions](docs/REAL_DATA_GENERALIZATION_V1_2.md#reproduction)
+explain how to rebuild ignored data/checkpoints. No new architecture, runtime dependency
+or experimental training was added in v1.2.
 
-- [Dataset, label mapping, all measured arms and reproduction](docs/REAL_DATA_GENERALIZATION_V1_2.md)
-- [Five research questions and qualified conclusions](docs/SIM_TO_REAL_ANALYSIS_V1_2.md)
-- [Success/failure gallery and class/boundary analysis](docs/FAILURE_ANALYSIS_V1_2.md)
-- [CPU/GPU performance](docs/BENCHMARKS_V1_2.md)
-- [Release gates](docs/RELEASE_READINESS_V1_2.md), [release notes](docs/RELEASE_NOTES_V1_2.md)
+- [Dataset, mapping, measured arms and seeds](docs/REAL_DATA_GENERALIZATION_V1_2.md)
+- [Research conclusions](docs/SIM_TO_REAL_ANALYSIS_V1_2.md), [all contrasts](docs/SIM_TO_REAL_TABLES_V1_2.md)
+- [Performance](docs/BENCHMARKS_V1_2.md), [historical release validation](docs/RELEASE_READINESS_V1_2.md)
+- [Release notes](docs/RELEASE_NOTES_V1_2.md), [prepared GitHub Release body](docs/GITHUB_RELEASE_V1_2.md)
+- [Current maintenance review](docs/MAINTENANCE_REVIEW_2026_10_20.md)
 
 ## v1.1: generalization and domain shift
 
@@ -61,10 +124,8 @@ TinyUNet's baseline nominal mIoU is **0.6874 ± 0.1272** across seeds; LiteFCN's
 **+5.73 percentage points** for TinyUNet and **−2.12 points** for LiteFCN.
 These synthetic results include negative experiments and do not establish
 real-world robustness. The original single-seed results remain dated historical
-evidence. The initial checkout lacked the stated v1.0.0 tag; owner-approved `54f3a2a` was
-the provisional baseline. A v1.0.0 tag has since appeared at that commit. The v1.1
-frozen commit is `d9a74a0`; no local v1.1 tag exists. Historical audits retain their
-original checkout observations.
+evidence. Tags `v1.0.0` and `v1.1.0` now identify `54f3a2a` and `d9a74a0`.
+Historical audits retain their original observations about tags unavailable at collection.
 
 - [Domain-shift measurements](docs/DOMAIN_SHIFT_V1_1.md)
 - [Augmentation ablations, including negative results](docs/AUGMENTATION_ABLATION_V1_1.md)

@@ -1,0 +1,8 @@
+include LICENSE README.md CHANGELOG.md ROADMAP.md
+recursive-include configs *.yaml
+recursive-include scripts *.py
+recursive-include constraints *.txt
+recursive-include docs *.md *.json *.csv *.txt *.log *.png
+prune data
+prune runs
+prune artifacts

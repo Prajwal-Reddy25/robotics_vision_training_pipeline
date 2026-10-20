@@ -1,0 +1,112 @@
+{
+  "checked_on": "2026-10-20",
+  "method": "Public Flickr oEmbed metadata, not re-licensing or a rights audit.",
+  "records": [
+    {
+      "author_name": "DeclanTM",
+      "author_url": "https://www.flickr.com/photos/declanjewell/",
+      "coco_id": 68765,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F1501351467%2F",
+      "recorded_author": "DeclanTM",
+      "title": "Keyboard & Mouse",
+      "type": "photo"
+    },
+    {
+      "author_name": "Mechatronics Guy",
+      "author_url": "https://www.flickr.com/photos/38462165@N05/",
+      "coco_id": 206218,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F7161410855%2F",
+      "recorded_author": "Mechatronics Guy",
+      "title": "Science Tripod, V01.",
+      "type": "photo"
+    },
+    {
+      "author_name": "@joefoodie",
+      "author_url": "https://www.flickr.com/photos/montage_man/",
+      "coco_id": 256916,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F3674288028%2F",
+      "recorded_author": "@joefoodie",
+      "title": "Pizzas",
+      "type": "photo"
+    },
+    {
+      "author_name": null,
+      "author_url": null,
+      "coco_id": 287347,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F5250579638%2F",
+      "recorded_author": null,
+      "title": null,
+      "type": "link"
+    },
+    {
+      "author_name": "mikes rite",
+      "author_url": "https://www.flickr.com/photos/mac-minimalist/",
+      "coco_id": 333772,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F4212612461%2F",
+      "recorded_author": "mikes rite",
+      "title": "G4 flat panel iMac - kitchen computer",
+      "type": "photo"
+    },
+    {
+      "author_name": "SJU Undergraduate Admissions",
+      "author_url": "https://www.flickr.com/photos/sjuadmissions/",
+      "coco_id": 343466,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F7831368930%2F",
+      "recorded_author": "SJU Undergraduate Admissions",
+      "title": "community kitchen",
+      "type": "photo"
+    },
+    {
+      "author_name": "Chairman of the Joint Chiefs of Staff",
+      "author_url": "https://www.flickr.com/photos/thejointstaff/",
+      "coco_id": 383842,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F4536776986%2F",
+      "recorded_author": "Chairman of the Joint Chiefs of Staff",
+      "title": "100419-N-0696M-216",
+      "type": "photo"
+    },
+    {
+      "author_name": "amy_elizabeth_west",
+      "author_url": "https://www.flickr.com/photos/amy_elizabeth_west/",
+      "coco_id": 458410,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F4586518760%2F",
+      "recorded_author": "amy_elizabeth_west",
+      "title": "basement living 4",
+      "type": "photo"
+    },
+    {
+      "coco_id": 464358,
+      "error": "HTTP Error 404: Not Found",
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F474446555%2F",
+      "recorded_author": null
+    },
+    {
+      "author_name": "santanartist",
+      "author_url": "https://www.flickr.com/photos/dottieday/",
+      "coco_id": 498919,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F508669075%2F",
+      "recorded_author": "santanartist",
+      "title": "Fruit in the market",
+      "type": "photo"
+    },
+    {
+      "author_name": "Eirik Newth",
+      "author_url": "https://www.flickr.com/photos/eiriknewth/",
+      "coco_id": 554291,
+      "http_status": 200,
+      "query_url": "https://www.flickr.com/services/oembed/?format=json&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F_%2F256248429%2F",
+      "recorded_author": "Eirik Newth",
+      "title": "Cats in a bowl",
+      "type": "photo"
+    }
+  ]
+}

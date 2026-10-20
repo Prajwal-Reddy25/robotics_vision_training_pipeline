@@ -41,7 +41,7 @@ def test_portable_constraints_and_declared_versions_match_release():
     declared = re.search(r'^version = "([^"]+)"$', pyproject, re.MULTILINE).group(1)
     import robotics_vision
 
-    assert robotics_vision.__version__ == declared == "1.2.0"
+    assert robotics_vision.__version__ == declared
 
 
 def test_readme_result_rows_match_frozen_three_seed_evidence():

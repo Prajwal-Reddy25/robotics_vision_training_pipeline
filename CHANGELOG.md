@@ -65,3 +65,15 @@ three existing commits is the missing release tag.
 Existing features include synthetic segmentation data, TinyUNet/LiteFCN, CPU/CUDA
 training, AMP, full-state checkpoints/resume, TorchScript/ONNX/ORT, optional
 TensorRT integration, automated tests and CPU/GPU benchmark evidence.
+
+## 1.2.1 — Evidence Verification and Packaging
+
+- Added independent offline verification of published v1.2 evidence.
+- Added corruption-detection tests and documentation validation.
+- Fixed source-distribution completeness using MANIFEST.in.
+- Added portable historical CPU dependency constraints.
+- Improved README presentation, diagnostic gallery and release notes.
+- Corrected package-version test for future releases.
+
+No frozen experiment results, model implementations,
+datasets or historical release tags were changed.

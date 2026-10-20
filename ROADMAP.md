@@ -16,12 +16,17 @@ augmentation signs. No real-data tuning or additional architecture. See
 [real-data scope](docs/REAL_DATA_GENERALIZATION_V1_2.md) and
 [release readiness](docs/RELEASE_READINESS_V1_2.md).
 
-## Proposed v1.2.1 — release-maintenance tooling
+## 1.2.1 — Evidence Verification and Packaging
 
-The maintenance branch prepares offline evidence verification, CI gates, portable
-CPU constraints, documentation consistency and clearer release presentation.
-No experiment, model, dataset or measured result changes. Package version and tag
-remain 1.2.0 during review. See [maintenance review](docs/MAINTENANCE_REVIEW_2026_10_20.md).
+- Added independent offline verification of published v1.2 evidence.
+- Added corruption-detection tests and documentation validation.
+- Fixed source-distribution completeness using MANIFEST.in.
+- Added portable historical CPU dependency constraints.
+- Improved README presentation, diagnostic gallery and release notes.
+- Corrected package-version test for future releases.
+
+No frozen experiment results, model implementations,
+datasets or historical release tags were changed.
 
 ## Proposed v1.3.0 — representative warehouse adaptation experiment
 
